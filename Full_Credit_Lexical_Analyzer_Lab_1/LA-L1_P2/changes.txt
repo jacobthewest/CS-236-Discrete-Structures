@@ -1,0 +1,8 @@
+Changes
+
+//startState \n: if statement around scanner.incrementLineNumber();
+//undefinedState() -1 scanner.decrementLinNumber(); && valueSoFar.pop_back();
+
+
+---Problems with my code---
+

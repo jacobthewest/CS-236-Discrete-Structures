@@ -1,0 +1,6 @@
+=====To-Do=====
+
+1. Make objects of parameter, predicate, rule and DatalogProgram classes
+	To do this we need to determine what needs to be in these objects using the grammar as a guide
+1.5 Follow the "The Parser" slides like the back of your hand broskie!
+2. Wrap your head around the Predicate class

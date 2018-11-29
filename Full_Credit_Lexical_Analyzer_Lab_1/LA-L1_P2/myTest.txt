@@ -1,0 +1,14 @@
+'This is
+a multi
+line
+string
+'
+
+'short string'
+'another multi
+line
+string'
+
+
+'This is 
+undefined
