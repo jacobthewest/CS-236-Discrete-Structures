@@ -1,5 +1,9 @@
 #include "Predicate.h"
 
+Predicate::Predicate(string identifier) {
+	this->id = identifier;
+}
+
 Predicate::Predicate(string identifier, vector<Parameter> parameterList) {
 	this->id = identifier;
 	this->parametersVector = parameterList;

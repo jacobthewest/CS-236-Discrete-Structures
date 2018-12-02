@@ -15,7 +15,8 @@ private:
 	vector<Predicate> predicateList_m;
 public:
 	Rule() {};
-	Rule(Predicate predicate, vector<Predicate> predicateList) {};
+	Rule(Predicate predicate);
+	Rule(Predicate predicate, vector<Predicate> predicateList);
 	~Rule() {};
 
 	string toString();

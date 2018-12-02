@@ -13,11 +13,11 @@ using namespace std;
 
 class DatalogProgram {
 private:
-	vector<Predicate> schemes;
-	vector<Predicate> facts;
-	vector<Predicate> queries;
-	vector<Rule> rules;
-	set<string> domain;
+	vector<Predicate> schemes_m;
+	vector<Predicate> facts_m;
+	vector<Predicate> queries_m;
+	vector<Rule> rules_m;
+	set<string> domain_m;
 public:
 	//Contstructor
 	DatalogProgram() {};
@@ -28,6 +28,12 @@ public:
 	string rulesToString();
 	string queriesToString();
 	string domainToString();
+
+	void addScheme(Predicate schemeToAdd);
+	void addFact(Predicate factToAdd);
+	void addRule(Rule ruleToAdd);
+	void addQuery(Predicate queryToAdd);
+	void addDomain(string domainToAdd);
 
 
 	//TA SLides

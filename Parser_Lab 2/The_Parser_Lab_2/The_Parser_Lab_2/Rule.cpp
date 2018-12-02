@@ -1,5 +1,9 @@
 #include "Rule.h"
 
+Rule::Rule(Predicate predicate) {
+	this->predicate_m = predicate;
+}
+
 Rule::Rule(Predicate predicate, vector<Predicate> predicateList) {
 	this->predicate_m = predicate;
 	this->predicateList_m = predicateList_m;

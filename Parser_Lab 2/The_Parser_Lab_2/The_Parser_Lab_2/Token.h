@@ -15,7 +15,6 @@ class Token {
 private:
 	string value_m;
 	unsigned int lineNumber_m;
-	unsigned int lineNumber_m;
 	TokenType type_m;
 
 public:
@@ -26,6 +25,7 @@ public:
 	string toString();
 	TokenType getTokenType() { return type_m; }
 	string getTokenTypeAsString(Token token);
-	std::string printOffendingToken();
+	string printOffendingToken();
+	string getValue() { return value_m; }
 };
 #endif	// TOKEN_H

@@ -4,3 +4,9 @@
 	To do this we need to determine what needs to be in these objects using the grammar as a guide
 1.5 Follow the "The Parser" slides like the back of your hand broskie!
 2. Wrap your head around the Predicate class
+
+
+
+
+Work on Parser class. Work on Predicate class--(Predicate constructor so the Parser::parseQuery function can work). 
+	Buff out the Parser class to add scheme, fact, query, and rule objects to the datalogProgram vectors during the parse.

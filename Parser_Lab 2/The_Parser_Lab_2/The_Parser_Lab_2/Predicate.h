@@ -30,7 +30,8 @@ public:
 
 	//----Constructors----//
 	Predicate() {};
-	Predicate(string identifier, vector<Parameter> parameterList) {};
+	Predicate(string identifier);
+	Predicate(string identifier, vector<Parameter> parameterList);
 	~Predicate() {};
 
 	vector<Parameter> getVectorOfParameters() { return this->parametersVector; }

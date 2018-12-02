@@ -13,7 +13,7 @@ private:
 public:
 	
 	Parameter() {};
-	Parameter(string type_m, string value_m) {};
+	Parameter(string type_m, string value_m);
 	~Parameter() {};
 	string toString();
 };

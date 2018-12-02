@@ -89,32 +89,46 @@ void Parser::parseQueryList() {
 }
 void Parser::parseScheme() {
 	//scheme   	-> 	headPredicate
+	/* SOME CONTROVERSY HERE AMONG THE GITHUBS. Woodfield and Barker have a different
+	   grammar for sheme ->. The one above this multiline comment is from Barker. I 
+	   will use Barker's. I am guessing that adding the scheme to the datalogProgramObject
+	   will be after I parse the head predicate
+	*/
+	predicateObject = Predicate(currentToken->getValue());
 	parseHeadPredicate();
+	datalogProgramObject.addScheme(predicateObject); //Is this correct? Who knows...
 }
 void Parser::parseFact() {
 	//fact    	->	ID LEFT_PAREN STRING stringList RIGHT_PAREN PERIOD
+	predicateObject = Predicate(currentToken->getValue());
 	match(ID);
 	match(LEFT_PAREN);
 	match(STRING);
 	parseStringList();
 	match(RIGHT_PAREN);
 	match(PERIOD);
+	datalogProgramObject.addFact(predicateObject);
 }
 void Parser::parseRule() {
-	//rule    	->	headPredicate COLON_DASH predicate predicateList PERIOD
+	//rule    	->	headPredicate COLON_DASH predicate predicateList PERIOD	
 	parseHeadPredicate();
+	ruleObject = Rule(predicateObject);
 	match(COLON_DASH);
 	parsePredicate();
 	parsePredicateList();
 	match(PERIOD);
+	datalogProgramObject.addRule(ruleObject);
 }
 void Parser::parseQuery() {
 	//query	        ->      predicate Q_MARK
+	predicateObject = Predicate(currentToken->getValue());
 	parsePredicate();
 	match(Q_MARK);
+	datalogProgramObject.addQuery(predicateObject);
 }
 void Parser::parseHeadPredicate() {
 	//headPredicate	->	ID LEFT_PAREN ID idList RIGHT_PAREN
+	predicateObject = Predicate(currentToken->getValue());
 	match(ID);
 	match(LEFT_PAREN);
 	match(ID);

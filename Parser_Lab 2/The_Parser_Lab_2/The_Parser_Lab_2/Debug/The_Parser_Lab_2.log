@@ -1,9 +1,2 @@
-﻿  Lexer.cpp
-  main.cpp
-c:\users\jacob\documents\fall 18\236\labs\parser_lab 2\the_parser_lab_2\the_parser_lab_2\parser.h(25): warning C4018: '<': signed/unsigned mismatch
-c:\users\jacob\documents\fall 18\236\labs\parser_lab 2\the_parser_lab_2\the_parser_lab_2\main.cpp(56): error C2065: 'DatalogProgram': undeclared identifier
-c:\users\jacob\documents\fall 18\236\labs\parser_lab 2\the_parser_lab_2\the_parser_lab_2\main.cpp(56): error C2146: syntax error: missing ';' before identifier 'datalogProgram'
-c:\users\jacob\documents\fall 18\236\labs\parser_lab 2\the_parser_lab_2\the_parser_lab_2\main.cpp(56): error C3861: 'datalogProgram': identifier not found
-c:\users\jacob\documents\fall 18\236\labs\parser_lab 2\the_parser_lab_2\the_parser_lab_2\main.cpp(58): error C2065: 'datalogProgram': undeclared identifier
-  Scanner.cpp
-  Generating Code...
+﻿  main.cpp
+  The_Parser_Lab_2.vcxproj -> C:\Users\jacob\source\repos\CS 236-Discrete Structures\Parser_Lab 2\The_Parser_Lab_2\Debug\The_Parser_Lab_2.exe

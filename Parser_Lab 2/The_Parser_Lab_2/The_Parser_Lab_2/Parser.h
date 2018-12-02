@@ -18,7 +18,7 @@ private:
 public:
 	//Constructor
 	Parser() {};
-	Parser(vector<Token*> tokenList) {};
+	Parser(vector<Token*> tokenList);
 	~Parser() {};
 
 	DatalogProgram getDatalogProgramObject() { return datalogProgramObject; }
