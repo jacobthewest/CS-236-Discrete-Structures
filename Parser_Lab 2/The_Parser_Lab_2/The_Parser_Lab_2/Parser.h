@@ -36,11 +36,12 @@ public:
 	void parsePredicate();
 	void parsePredicateList();
 	void parseParameterList();
-	void parseStringList();
+	void parseStringList();	
 	void parseIdList();
 	void parseParameter();
 	void parseExpression(); 
-	void parseOperator();
+	void parseOperator(ostringstream &expressionOss);
+	void parseId(ostringstream &expressionOss);
 
 
 	/* THIS IS THE GRAMMAR

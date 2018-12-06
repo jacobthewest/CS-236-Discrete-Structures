@@ -49,8 +49,11 @@ string DatalogProgram::domainToString() {
 
 	//How to iterate through a set-- https://thispointer.com/different-ways-to-iterate-over-a-set-in-c/
 	set<string>::iterator setIterator;
-	for (setIterator = domain_m.begin(); setIterator != domain_m.end(); setIterator++) {
-		oss << "  " << (*setIterator) << endl;
+	setIterator = domain_m.begin();
+	for (size_t i = 0; i < domain_m.size(); i++) {
+		if (i == domain_m.size() - 1) { oss << "  " << (*setIterator); }
+		else { oss << "  " << (*setIterator) << endl; }
+		setIterator++;
 	}
 
 	return oss.str();

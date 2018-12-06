@@ -227,18 +227,35 @@ void Parser::parseParameter() {
 }
 void Parser::parseExpression() {
 	//expression	-> 	LEFT_PAREN parameter operator parameter RIGHT_PAREN
+	ostringstream expressionOss;
+
 	match(LEFT_PAREN);
-	parseParameter();
-	parseOperator();
-	parseParameter();
+	expressionOss << "(";
+	parseId(expressionOss);
+	parseOperator(expressionOss);
+	parseId(expressionOss);	
+	expressionOss << ")";
+
+	predicateObject.addParameter(Parameter("EXPRESSION", expressionOss.str()));
+
 	match(RIGHT_PAREN);
+
 }
-void Parser::parseOperator() {
+void Parser::parseOperator(ostringstream &expressionOss) {
 	//operator	->	ADD | MULTIPLY
 	if (currentToken->getTokenType() == ADD) {
 		match(ADD);
+		expressionOss << "+";
 	}
 	if (currentToken->getTokenType() == MULTIPLY) {
 		match(MULTIPLY);
+		expressionOss << "*";
+	}
+}
+
+void Parser::parseId(ostringstream &expressionOss) {
+	if (currentToken->getTokenType() == ID) {
+		expressionOss << currentToken->getValue();
+		match(ID);
 	}
 }
