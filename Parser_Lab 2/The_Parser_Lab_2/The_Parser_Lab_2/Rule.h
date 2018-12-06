@@ -25,5 +25,5 @@ public:
 	void addPredicate(Predicate predicate);
 };
 
-#endif RULE_H
+#endif //RULE_H
 

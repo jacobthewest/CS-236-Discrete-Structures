@@ -16,15 +16,24 @@ void Predicate::addParameter(Parameter parameterToAdd) {
 string Predicate::toString() {
 	ostringstream oss;
 
-	for (size_t i = 0; i < parametersVector.size(); i++) {
-		switch (i) {
-		case 0:
-			oss << parametersVector[i].toString();
-			break;
-		default:
-			oss << "," << parametersVector[i].toString();
-			break;
+	oss << getId();
+
+	if (parametersVector.size() == 1) {
+		oss << "(" << parametersVector.at(0).toString() << ")";
+	}
+	else {
+		oss << "(";
+		for (size_t i = 0; i < parametersVector.size(); i++) {
+			switch (i) {
+			case 0:
+				oss << parametersVector.at(i).toString();
+				break;
+			default:
+				oss << "," << parametersVector.at(i).toString();
+				break;
+			}
 		}
+		oss << ")";
 	}
 	return oss.str();
 }

@@ -16,17 +16,18 @@ void Rule::addPredicate(Predicate predicate) {
 string Rule::toString() {
 	ostringstream oss;
 
-	oss << " :- " << predicate_m.toString();
+	oss << predicate_m.toString() << " :- ";
 
 	for (size_t i = 0; i < predicateList_m.size(); i++) {
 		switch (i) {
 		case 0:
-			oss << predicateList_m[i].toString();
+			oss << predicateList_m.at(i).toString();
 			break;
 		default:
-			oss << "," << predicateList_m[i].toString();
+			oss << "," << predicateList_m.at(i).toString();
 			break;
 		}
 	}
+	oss << ".";
 	return oss.str();
 }

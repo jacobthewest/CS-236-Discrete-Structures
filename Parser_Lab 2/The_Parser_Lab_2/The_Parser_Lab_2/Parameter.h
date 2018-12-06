@@ -16,6 +16,8 @@ public:
 	Parameter(string type_m, string value_m);
 	~Parameter() {};
 	string toString();
+	string getType() { return type_m; }
+	string getValue() { return value_m; }
 };
 
 

@@ -33,8 +33,7 @@ public:
 	void addFact(Predicate factToAdd);
 	void addRule(Rule ruleToAdd);
 	void addQuery(Predicate queryToAdd);
-	void addDomain(string domainToAdd);
-
+	void addDomain(vector<Parameter> parameterList);
 
 	//TA SLides
 	/*We need :

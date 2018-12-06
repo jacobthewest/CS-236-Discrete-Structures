@@ -10,3 +10,11 @@
 
 Work on Parser class. Work on Predicate class--(Predicate constructor so the Parser::parseQuery function can work). 
 	Buff out the Parser class to add scheme, fact, query, and rule objects to the datalogProgram vectors during the parse.
+
+
+Working through Parser.cpp and making sure that all of the grammar things have the correct additions (predicateObject.addParamater())
+as well as point to the correct item in the parse. I'm just kind of doing my best, then compare with Bryce, then do my best, then compare, etc
+
+Make stuff print out before ()
+Populate Domain Set (in datalogProgram.cpp look for places that say addDomain())
+xxxxxxx Spaces between tostring and colon

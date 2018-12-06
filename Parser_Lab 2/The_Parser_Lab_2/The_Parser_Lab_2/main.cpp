@@ -54,7 +54,7 @@ int main(int argc, char * argv[])
 		Parser parserObj(copyOfVectorOfTokenPointers);
 		DatalogProgram datalogProgram = parserObj.getDatalogProgramObject();
 		cout << "Success!" << endl;
-		datalogProgram.toString();
+		cout << datalogProgram.toString();
 	}
 	catch (Token token) {
 		cout << "Failure!" << endl;
@@ -68,7 +68,7 @@ int main(int argc, char * argv[])
 	
 	*/
 	
-	//system("pause");
+	system("pause");
 	return 0;
 }
 

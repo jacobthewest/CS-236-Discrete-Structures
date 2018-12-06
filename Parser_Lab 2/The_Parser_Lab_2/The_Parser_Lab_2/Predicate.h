@@ -40,14 +40,4 @@ public:
 	void addParameter(Parameter parameterToAdd);
 };
 
-//Predicate
-//Id 				predicateId
-//vector<Parameter> 	parameters //not empty
-//							   //Because Id, Strng, and Expression inherit
-//							   //from Parameter, they can be created and stored
-//							   //in the variable parameters
-//	Rule(Lex lex)
-	//	calls:new Id(lex)
-	//	calls : Parameter.createParameter(lex)
-
 #endif //PREDICATE_H

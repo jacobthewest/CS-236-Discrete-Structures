@@ -96,15 +96,22 @@ void Parser::parseScheme() {
 	*/
 	predicateObject = Predicate(currentToken->getValue());
 	parseHeadPredicate();
-	datalogProgramObject.addScheme(predicateObject); //Is this correct? Who knows...
+	datalogProgramObject.addScheme(predicateObject); //Is this correct? Who knows... Yup, pretty sure that it is
 }
 void Parser::parseFact() {
 	//fact    	->	ID LEFT_PAREN STRING stringList RIGHT_PAREN PERIOD
 	predicateObject = Predicate(currentToken->getValue());
 	match(ID);
 	match(LEFT_PAREN);
+	if (currentToken->getTokenType() == STRING) {
+		TokenType tokenType;
+		tokenType = currentToken->getTokenType();
+		predicateObject.addParameter(Parameter(currentToken->tokenTypeToString(tokenType), currentToken->getValue()));
+	}
 	match(STRING);
-	parseStringList();
+	if (currentToken->getTokenType() == COMMA) {
+		parseStringList();
+	}
 	match(RIGHT_PAREN);
 	match(PERIOD);
 	datalogProgramObject.addFact(predicateObject);
@@ -115,7 +122,9 @@ void Parser::parseRule() {
 	ruleObject = Rule(predicateObject);
 	match(COLON_DASH);
 	parsePredicate();
-	parsePredicateList();
+	if (currentToken->getTokenType() == COMMA) {
+		parsePredicateList();
+	}	
 	match(PERIOD);
 	datalogProgramObject.addRule(ruleObject);
 }
@@ -131,17 +140,28 @@ void Parser::parseHeadPredicate() {
 	predicateObject = Predicate(currentToken->getValue());
 	match(ID);
 	match(LEFT_PAREN);
+	if (currentToken->getTokenType() == ID) { 
+		TokenType tokenType;
+		tokenType = currentToken->getTokenType();
+		predicateObject.addParameter(Parameter(currentToken->tokenTypeToString(tokenType), currentToken->getValue()));
+	}
 	match(ID);
-	parseIdList();
+	if (currentToken->getTokenType() == COMMA) {
+		parseIdList();
+	}
 	match(RIGHT_PAREN);
 }
 void Parser::parsePredicate() {
 	//predicate	->	ID LEFT_PAREN parameter parameterList RIGHT_PAREN
+	predicateObject = Predicate(currentToken->getValue());
 	match(ID);
 	match(LEFT_PAREN);
 	parseParameter();
-	parseParameterList();
+	if (currentToken->getTokenType() == COMMA) {
+		parseParameterList();
+	}
 	match(RIGHT_PAREN);
+	ruleObject.addPredicate(predicateObject);
 }
 void Parser::parsePredicateList() {
 	//predicateList->COMMA predicate predicateList | lambda
@@ -159,22 +179,35 @@ void Parser::parseParameterList() {
 		parseParameterList();
 	}
 }
+
 void Parser::parseStringList() {
 	//stringList	-> 	COMMA STRING stringList | lambda
 	match(COMMA);
+	if (currentToken->getTokenType() == STRING) {
+		TokenType tokenType;
+		tokenType = currentToken->getTokenType();
+		predicateObject.addParameter(Parameter(currentToken->tokenTypeToString(tokenType), currentToken->getValue()));
+	}
 	match(STRING);
 	if (currentToken->getTokenType() == COMMA) {
 		parseStringList();
 	}
 }
+
 void Parser::parseIdList() {
 	//idList  	-> 	COMMA ID idList | lambda
 	match(COMMA);
+	if (currentToken->getTokenType() == ID) {
+		TokenType tokenType;
+		tokenType = currentToken->getTokenType();
+		predicateObject.addParameter(Parameter(currentToken->tokenTypeToString(tokenType), currentToken->getValue()));
+	}
 	match(ID);
 	if (currentToken->getTokenType() == COMMA) {
 		parseIdList();
 	}
 }
+
 void Parser::parseParameter() {
 	/*
 		parameter	->	STRING
@@ -183,6 +216,9 @@ void Parser::parseParameter() {
 	*/
 
 	if (currentToken->getTokenType() == STRING || currentToken->getTokenType() == ID) {
+		TokenType tokenType;
+		tokenType = currentToken->getTokenType();
+		predicateObject.addParameter(Parameter(currentToken->tokenTypeToString(tokenType), currentToken->getValue()));
 		match(currentToken->getTokenType());
 	}
 	else {
