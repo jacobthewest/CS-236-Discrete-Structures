@@ -48,7 +48,7 @@ int main(int argc, char * argv[])
 	}
 
 	Lexer lexerObj(argv[1]); //Send the file to the scanner
-	vector<Token*> copyOfVectorOfTokenPointers = lexerObj.getTokenList();
+	vector<Token*> copyOfVectorOfTokenPointers = lexerObj.getTokenList(); 
 
 	try {
 		Parser parserObj(copyOfVectorOfTokenPointers);
@@ -56,42 +56,11 @@ int main(int argc, char * argv[])
 		cout << "Success!" << endl;
 		cout << datalogProgram.toString();
 	}
-	catch (Token token) {
+	catch (string offendingToken) { //Catches a string, not a token
 		cout << "Failure!" << endl;
-		cout << token.toString() << endl;
+		cout << "  " << offendingToken;
 	}
-
-	/* Commented out this part from Lexical Analyzer for the Datalog Parser
 	
-		//We have now broken out of the while loop and processed everything so far. We are going to print the token vector now.
-		cout << lexerObj.printFromScannerClass();
-	
-	*/
-	
-	system("pause");
+	//system("pause");
 	return 0;
 }
-
-//int main(int argc, char* argv[]) {
-//	try {
-//		Lexer lexerObject = new Lex(argv[1]);
-//		DatalogProgram datalogProgram =	new DatalogProgram(lexerObject);
-//		cout << “Success!” << endl;
-//		datalogProgram.print();
-//	}
-//	catch (Token token) {
-//		cout << “Failure!” << endl;
-//		cout << token.toString() << endl;
-//	}
-//}
-
-
-//Create a Parser class
-//	Takes a vector of Token objects
-//	Checks the syntax
-//	Run this to see if you get "Success!" or "Failure!" appropriately for the tests on the website
-//Create the DatalogProgram, Predicate, Rule, and Parameter classes
-//	Make sure you understand what makes up each of these classes
-//	Look at the input and output of the examples on the website
-//Modify your Parser to create instances of the wrapper classes
-//	Test your code against the example tests on the website

@@ -1,4 +1,3 @@
-//Point of this class is to sort chars into tokens
 #ifndef LEXER_H
 #define LEXER_H
 

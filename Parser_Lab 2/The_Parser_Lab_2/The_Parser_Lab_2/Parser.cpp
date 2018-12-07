@@ -41,6 +41,7 @@ bool Parser::match(TokenType tokenType) {
 		return false;
 	}
 }
+
 void Parser::parseSchemeList() {
 	//schemeList	->	scheme schemeList | lambda
 
@@ -50,8 +51,8 @@ void Parser::parseSchemeList() {
 			parseSchemeList();
 		}
 	}
-
 }
+
 void Parser::parseFactList() {
 	//factList	->	fact factList | lambda
 
@@ -63,6 +64,7 @@ void Parser::parseFactList() {
 	}
 
 }
+
 void Parser::parseRuleList() {
 	//ruleList	->	rule ruleList | lambda
 	if (currentToken->getTokenType() == ID) {
@@ -72,6 +74,7 @@ void Parser::parseRuleList() {
 		}
 	}
 }
+
 void Parser::parseQueryList() {
 	//queryList	->	query queryList | lambda
 	if (currentToken->getTokenType() == EOF_TYPE) {
@@ -81,22 +84,22 @@ void Parser::parseQueryList() {
 		if (currentToken->getTokenType() == ID) {
 			parseQueryList();
 		}
-		else if (currentToken->getTokenType() == EOF_TYPE) {
+		/*else if (currentToken->getTokenType() == EOF_TYPE) {
 			throw string(currentToken->toString());
-		}
+		}*/
 	}
 
 }
+
 void Parser::parseScheme() {
 	//scheme   	-> 	headPredicate
 	/* SOME CONTROVERSY HERE AMONG THE GITHUBS. Woodfield and Barker have a different
 	   grammar for sheme ->. The one above this multiline comment is from Barker. I 
-	   will use Barker's. I am guessing that adding the scheme to the datalogProgramObject
-	   will be after I parse the head predicate
+	   will use Barker's.
 	*/
 	predicateObject = Predicate(currentToken->getValue());
 	parseHeadPredicate();
-	datalogProgramObject.addScheme(predicateObject); //Is this correct? Who knows... Yup, pretty sure that it is
+	datalogProgramObject.addScheme(predicateObject); 
 }
 void Parser::parseFact() {
 	//fact    	->	ID LEFT_PAREN STRING stringList RIGHT_PAREN PERIOD
@@ -132,7 +135,7 @@ void Parser::parseQuery() {
 	//query	        ->      predicate Q_MARK
 	predicateObject = Predicate(currentToken->getValue());
 	parsePredicate();
-	match(Q_MARK);
+	match(Q_MARK); 
 	datalogProgramObject.addQuery(predicateObject);
 }
 void Parser::parseHeadPredicate() {

@@ -76,7 +76,8 @@ void DatalogProgram::addQuery(Predicate queryToAdd) {
 void DatalogProgram::addDomain(vector<Parameter> parameterList) {
 	for (size_t i = 0; i < parameterList.size(); i++) {
 		if (parameterList.at(i).getType() == "STRING") {
-			this->domain_m.insert(parameterList.at(i).getValue());
+			//insert function handles alphabetical sorting and prevents duplicates in set
+			this->domain_m.insert(parameterList.at(i).getValue()); 
 		}
 	}	
 }
