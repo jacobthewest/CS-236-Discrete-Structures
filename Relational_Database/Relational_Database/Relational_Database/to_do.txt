@@ -1,0 +1,1 @@
+addRowToRelation(tupleObj) doesn't work on the second tuple being added.
