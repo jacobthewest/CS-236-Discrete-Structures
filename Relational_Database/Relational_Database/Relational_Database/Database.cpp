@@ -167,7 +167,7 @@ void Database::addRowToRelation(Tuple tupleObj) {
 		}
 
 		//Print the tuples (values in the row) in the query involved
-		tempRelation.printTuples(parameterPositions_m, parametersThatAreIDs_m, numTuples);
+		tempRelation.printTuples(parametersThatAreIDs_m, numTuples);
 
 		//Clear the vectors that we populated with the tempRelation
 		parametersThatAreIDs_m.clear();	
