@@ -32,6 +32,10 @@ public:
 	void addRelation(Relation relationObj);
 	void addRowToRelation(Tuple tupleObj);
 	void evaluateQueries();
+	void printTheStuffBeforePrintingTuples(Relation tempRelation, vector<string> paramatersThatAreIDs, 
+		vector<Parameter> parametersFromTempRelation);
+	void checkForDuplicateParameters(vector<string>& parametersThatAreIDs_m, bool& duplicateParameterExists, 
+		size_t& positionOfDuplicateParameter, string& parameterValue);
 };
 
 #endif //DATABASE_H

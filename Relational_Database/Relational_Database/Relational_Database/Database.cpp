@@ -112,14 +112,7 @@ void Database::addRowToRelation(Tuple tupleObj) {
 				bool duplicateParameterExists = false;
 				size_t positionOfDuplicateParameter = 0;
 
-				for (size_t k = 0; k < parametersThatAreIDs_m.size(); k++) {
-
-					if (parametersThatAreIDs_m.at(k) == parameterValue) {
-						duplicateParameterExists = true;
-						positionOfDuplicateParameter = k;
-						break;
-					}
-				}
+				checkForDuplicateParameters(parametersThatAreIDs_m, duplicateParameterExists, positionOfDuplicateParameter, parameterValue);
 
 				if (duplicateParameterExists) {
 					tempRelation = tempRelation.select(positionOfDuplicateParameter, positionInParameterVector);
@@ -141,30 +134,9 @@ void Database::addRowToRelation(Tuple tupleObj) {
 		
 		tempRelation = tempRelation.rename(parametersThatAreIDs_m);
 		
-
-		//Pring the query. I. e. Make "SK(A,'c') print as SK(A,'c')? Yes(2)"
-		//cout << "THIS WORK? (Printing from Database.cpp class)" << endl << endl;
-		cout << tempRelation.getRelationName() << "(";
-
-		ostringstream oss;
-		for (size_t z = 0; z < parametersFromTempRelation.size(); z++) {
-			if (parametersFromTempRelation.size() - 1 == z) {
-				oss << parametersFromTempRelation.at(z).getValue();
-			}
-			else {
-				oss << parametersFromTempRelation.at(z).getValue() << ",";
-			}
-		}
-
+		printTheStuffBeforePrintingTuples(tempRelation, this->parametersThatAreIDs_m, parametersFromTempRelation);
+		
 		size_t numTuples = tempRelation.getNumTuplesInRelationForOutput(this->parametersThatAreIDs_m);
-		cout << oss.str() << ")? ";
-		if (tempRelation.getNumTuples() > 0) {
-			cout << "Yes(" << numTuples;
-			cout << ")" << endl;
-		}
-		else {
-			cout << "No" << endl;
-		}
 
 		//Print the tuples (values in the row) in the query involved
 		tempRelation.printTuples(parametersThatAreIDs_m, numTuples);
@@ -175,3 +147,41 @@ void Database::addRowToRelation(Tuple tupleObj) {
 	}
 }	
 
+void Database::printTheStuffBeforePrintingTuples(Relation tempRelation, vector<string> paramatersThatAreIDs,
+		vector<Parameter> parametersFromTempRelation) {
+	//Print the query. I. e. Make "SK(A,'c') print as SK(A,'c')? Yes(2)"
+	//cout << "THIS WORK? (Printing from Database.cpp class)" << endl << endl;
+	cout << tempRelation.getRelationName() << "(";
+
+	ostringstream oss;
+	for (size_t z = 0; z < parametersFromTempRelation.size(); z++) {
+		if (parametersFromTempRelation.size() - 1 == z) {
+			oss << parametersFromTempRelation.at(z).getValue();
+		}
+		else {
+			oss << parametersFromTempRelation.at(z).getValue() << ",";
+		}
+	}
+
+	size_t numTuples = tempRelation.getNumTuplesInRelationForOutput(this->parametersThatAreIDs_m);
+	cout << oss.str() << ")? ";
+	if (tempRelation.getNumTuples() > 0) {
+		cout << "Yes(" << numTuples;
+		cout << ")" << endl;
+	}
+	else {
+		cout << "No" << endl;
+	}
+}
+
+void Database::checkForDuplicateParameters(vector<string>& parametersThatAreIDs_m, bool& duplicateParameterExists,
+	size_t& positionOfDuplicateParameter, string& parameterValue) {
+	for (size_t k = 0; k < parametersThatAreIDs_m.size(); k++) {
+
+		if (parametersThatAreIDs_m.at(k) == parameterValue) {
+			duplicateParameterExists = true;
+			positionOfDuplicateParameter = k;
+			break;
+		}
+	}
+}
