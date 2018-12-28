@@ -1,10 +1,10 @@
 Schemes: 
-	dc(D,C)
+  dc(D,C)
 Facts:
-	dc('ralph','howard').
+  dc('ralph','howard').
 Rules:
 
 Queries:
-	dc('ralph', X)?
-	dc('bob','bob')?
-	dc(X,Y)?
+  dc('ralph', X)?
+  dc('bob','bob')?
+  dc(X,Y)?

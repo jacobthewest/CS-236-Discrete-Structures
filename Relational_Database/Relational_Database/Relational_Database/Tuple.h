@@ -10,14 +10,14 @@
 
 using namespace std;
 
-class Tuple : public vector<string> {
+class Tuple {
 
 private:
 	
 	string relationName_m;
-public:
-
 	vector<string> tupleList_m;
+public:
+		
 	//Constructor
 	Tuple() {};
 	~Tuple() {};
@@ -27,9 +27,14 @@ public:
 	void setRelationName(string name) { this->relationName_m = name; }
 	string getRelationName() { return this->relationName_m; }
 
-	void setTupelList(vector<string> tupleList);	
+	void setTupleList(vector<string> tupleList);	
 	string getElementFromTupleList(size_t positionInTupleList);
 	void addToTupleList(string tupleValueToAdd);
+	size_t getTupleListSize() { return this->tupleList_m.size(); }
+
+	bool operator< (const Tuple constTuple) const {
+		return this->tupleList_m < constTuple.tupleList_m;
+	}
 };
 
 #endif //TUPLE_H

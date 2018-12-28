@@ -2,13 +2,13 @@
 
 string Tuple::toString() {
 	ostringstream oss;
-	for (unsigned i = 0; i < this->size(); i++) {
-		oss << this->at(i) << endl;
+	for (unsigned i = 0; i < tupleList_m.size(); i++) {
+		oss << tupleList_m.at(i) << endl;
 	}
 	return oss.str();
 }
 
-void Tuple::setTupelList(vector<string> tupleList) {
+void Tuple::setTupleList(vector<string> tupleList) {
 	this->tupleList_m = tupleList;
 }
 

@@ -1,6 +1,7 @@
 ﻿  Database.cpp
+  Interpreter.cpp
+  Lexer.cpp
   Relation.cpp
-  Tuple.cpp
   main.cpp
   Generating Code...
   Relational_Database.vcxproj -> C:\Users\jacob\source\repos\CS 236-Discrete Structures\Relational_Database\Relational_Database\Debug\Relational_Database.exe

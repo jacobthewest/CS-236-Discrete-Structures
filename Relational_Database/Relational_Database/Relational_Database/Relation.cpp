@@ -66,7 +66,7 @@ Relation Relation::select(size_t positionInColumnOne, size_t positionInColumnTwo
 
 	/*Iterate through the set of tuples that this current relation has*/
 	set<Tuple>::iterator tupleIterator = tuples_m.begin();
-
+	
 	for (size_t i = 0; i < tuples_m.size(); i++) {
 		Tuple tempTuple = *tupleIterator;
 
@@ -92,8 +92,8 @@ Relation Relation::select(size_t positionInColumnOne, size_t positionInColumnTwo
 Relation Relation::project(vector<size_t> parameterPositions) {
 	/*Create a reltion and give it the name and header of the current relation we are working in*/
 	Relation relationToReturn;
-	relationToReturn.name_m = this->name_m;
-	relationToReturn.header_m = this->header_m;
+	relationToReturn.setRelationName(this->name_m);
+	relationToReturn.setHeader(this->header_m);
 
 	//Make a tuple set iterator;
 	set<Tuple>::iterator tuples_mIterator = tuples_m.begin();
@@ -109,9 +109,12 @@ Relation Relation::project(vector<size_t> parameterPositions) {
 		
 		//Iterate through all of the tuple values that the tempTuple has and add them to the tupleToProject
 		for (size_t j = 0; j < parameterPositions.size(); j++) {
-			string tupleValueToAdd = tempTuple.getElementFromTupleList(j);
+			size_t getValueFromTupleListAtThisParameterPosition = parameterPositions.at(j);
+			string tupleValueToAdd = tempTuple.getElementFromTupleList(getValueFromTupleListAtThisParameterPosition);
 			tupleToProject.addToTupleList(tupleValueToAdd);
 		}
+		
+		tuples_mIterator++;
 	}
 	
 	//Add tupleToProject (the tuple we have been straightup loading with tuple values) to the relation
@@ -119,8 +122,10 @@ Relation Relation::project(vector<size_t> parameterPositions) {
 
 	//In case tuples_m is empty then we will send back an empty relation
 	if (tuples_m.size() == 0) {
-		Relation emptyReltion;
-		return emptyReltion;
+		Relation emptyRelation;
+		emptyRelation.setRelationName(this->getRelationName());
+		emptyRelation.setHeader(this->getHeader());
+		return emptyRelation;
 	}
 	else { return relationToReturn; }
 }
@@ -139,4 +144,91 @@ Relation Relation::rename(vector<string> parametersThatAreIDs) {
 	relationToReturn.header_m.setParameterListForRenameFunction(parametersThatAreIDs);
 
 	return relationToReturn;
+}
+
+size_t Relation::getNumTuplesInRelationForOutput(vector<string> parametersThatAreIDs) {
+	
+	size_t numTuples = 0;
+
+	//Count the number of tuples
+	set<Tuple>::iterator i;
+	for (i = tuples_m.begin(); i != tuples_m.end(); i++) {
+		Tuple tempTuple = *i;
+
+		for (size_t j = 0; j < tempTuple.getTupleListSize(); j++) {
+			numTuples++;
+		}
+	}
+
+	/*Because we print only the tuples that are associated with an ID, we want to return the number of tuple pairs that
+	have an ID.*/
+
+	if (numTuples != 0) {
+		return (numTuples / parametersThatAreIDs.size());
+	}
+	
+	/* We have no IDs associated with what we need to print, so that means that we have a query that is searching for a specific
+	value pair. Because of the integer division, we can lose values so we will return 1. i.e. (tuples_m.size() / zero ID's) will
+	give us a zero, but we were put into this function because we said that tuples_m.size() > 0, so we know that there is something
+	in there. Also, for a value value pair, we don't have ID's associated with the number of tuples, so we will just return 1, because
+	a set will hold only one copy of each value value pair.*/
+	else { return 1; }
+}
+
+void Relation::printTuples(vector<string> parametersThatAreIDs, size_t numTuples) {
+
+	for (set<Tuple>::iterator i = tuples_m.begin(); i != tuples_m.end(); i++) {
+		Tuple tempTuple = *i;
+		size_t numTuplesOutputted = 0;
+		
+		for (size_t j = 0; j < tempTuple.getTupleListSize(); j++) {
+			
+			size_t tempColumn = j % parametersThatAreIDs.size();
+			/*
+				this little algorithm above will always keep the column within the correct bounds.
+				example: table (aka relation) with 3 parameters
+					"tempcolumn" will always be set in this pattern: 0, 1, 2; this is good because it matches with our "3 column" vector
+				example: table (aka reltion) with 2 parameters
+					"tempcolumn" will always be set in this pattern: 0, 1; this is good because it matches with our "3 column" vector
+				to see how it works better, run with barker's in62.txt test case and set a breakpoint on "column"
+			*/			
+
+			if (parametersThatAreIDs.size() < 2) {
+				/*
+					if parametersthatareids.size() < 2
+					this has to do with the query. the query may have parameters in it.
+
+					example query with zero parameters:  sk('b','c')? parametersthatareids.size() would be zero
+					example query with one parameter:  sk(a,'c')? parametersthatareids.size() would be one
+					example query with two parameters:  sk(a,b)? parametersthatareids.size() would be two
+				*/
+
+				// We have a single id to print with its matching tuple value
+				cout << "  " << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j) << endl;
+			}
+			else {
+
+				/* lastColumnAsIndex is set to parametersthatareids.size() - 1 because we need to work with vectors which
+				  are zero based*/
+				size_t lastColumnAsIndex = parametersThatAreIDs.size() - 1;
+
+				if (numTuplesOutputted == lastColumnAsIndex) {
+					//if we are at the last item in our row and at the final column
+					cout << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j) << endl;
+					numTuplesOutputted = 0; // Set numOutputted to zero so we can start printing for a new row				
+				}
+				else if (numTuplesOutputted == 0) {
+					//if we are at the first item in the row in the first column
+					cout << "  " << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j) << ", ";
+					numTuplesOutputted++;
+				}
+				else {
+					/* we are not at the first item in the row in the first column, we are somewhere in the
+					   middle of the first and last columns*/
+					cout << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j) << ", ";
+					numTuplesOutputted++;
+				}
+			}
+		}
+	}
 }

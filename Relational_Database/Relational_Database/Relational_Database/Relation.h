@@ -39,6 +39,9 @@ public:
 	void setHeader(Scheme header) { this->header_m = header; }
 	Scheme getHeader() { return this->header_m; }
 	size_t getNumTuples() { return this->tuples_m.size(); }
+	size_t getNumTuplesInRelationForOutput(vector<string> parametersThatAreIDs);
+	void printTuples(vector<string> parametersThaAreIDs, size_t numTuples);
+
 };
 
 #endif //RELATION_H

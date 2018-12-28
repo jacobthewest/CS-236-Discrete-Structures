@@ -3,9 +3,13 @@ Schemes:
 Facts:
   SK('a','c').
   SK('b','c').
-  SK('b','b').
-  SK('b','c').
+  SK('c','c').
+  SK('d','c').
+  SK('e','c').
+  SK('f','c').
+  SK('g','c').
+  SK('h','c').
 Rules:
 
 Queries:
-  SK('b','c')?
+  SK(A,'c')?

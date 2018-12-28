@@ -1,1 +1,11 @@
-addRowToRelation(tupleObj) doesn't work on the second tuple being added.
+What the heck with printing?
+Whitespace state
+
+Watch to see if the condition in the first if statement is ever useful: 
+	if ((j == tempTuple.getTupleListSize() - 1) || (parametersThatAreIDs.size() < 2)) {
+
+Test 44	in44.txt out44.txt	Rules are not evaluated.
+Test 61	in61.txt out61.txt	A larger test.
+Test 62	in62.txt out62.txt	
+
+

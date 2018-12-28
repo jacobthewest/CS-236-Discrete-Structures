@@ -4,13 +4,13 @@ Database::Database(vector<Predicate> schemes, vector<Predicate> facts, vector<Pr
 	this->schemes_m = schemes;
 	this->facts_m = facts;
 	this->queries_m = queries;
-
+	
 	/*cout << "queries_m: ";
 	for (size_t i = 0; i < queries_m.size(); i++) {
 		cout << queries_m.at(i).toString() << " ";
 	}
 	cout << endl << endl;
-*/
+	*/
 	//-----------------------------Handling the schemes (adding the tuples)--------------------------------//
 	/*Schemes are lists of attribute names. So by iterating through the schemes vector, we are adding column
 	headings to all of the realtions (aka tables) in the database*/
@@ -55,7 +55,7 @@ Database::Database(vector<Predicate> schemes, vector<Predicate> facts, vector<Pr
 		}
 
 		//tupleObj.tupleList_m = cellValuesInRowForTupleClass;
-		tupleObj.setTupelList(cellValuesInRowForTupleClass); /*Now we have moved over all of the values in the
+		tupleObj.setTupleList(cellValuesInRowForTupleClass); /*Now we have moved over all of the values in the
 															 row over to the tuple class. So now all of the
 															 values for that specific row in the table (aka
 															 relation) are stored away*/
@@ -74,16 +74,15 @@ void Database::addRelation(Relation relationObj) {
 void Database::addRowToRelation(Tuple tupleObj) {
 	//TupleObj is a tuple object that has a relation name and a vector<string> of tuple values (values for each position in the row)
 	string relationName = tupleObj.getRelationName(); //Get name of table/relation
-	Relation relationIterator = relationMap_m.find(relationName)->second; /*This sets relationIterator to the position of the current
+	Relation currentRelation = relationMap_m.find(relationName)->second; /*This sets relationIterator to the position of the current
 																		relation in the map. This relation definintely already exists*/
-	relationIterator.addTuple(tupleObj); /*Updates the value in the map (the value is a relation) by
+	currentRelation.addTuple(tupleObj); /*Updates the value in the map (the value is a relation) by
 										 Adding another tuple (aka row of values (aka vector<string>)) to the relation (aka table)*/
-	relationMap_m.at(relationName) = relationIterator; /*Now we are adding the updated value (aka relation) back into the map
+	relationMap_m.at(relationName) = currentRelation; /*Now we are adding the updated value (aka relation) back into the map
 													 so the current relation is up to date.*/
-
 }
 
-void Database::evaluateQueries() {
+	void Database::evaluateQueries() {
 	Relation tempRelation;
 	for (size_t i = 0; i < queries_m.size(); i++) {
 		
@@ -111,7 +110,7 @@ void Database::evaluateQueries() {
 			if (parameterType == "ID") {
 
 				bool duplicateParameterExists = false;
-				size_t positionOfDuplicateParameter;
+				size_t positionOfDuplicateParameter = 0;
 
 				for (size_t k = 0; k < parametersThatAreIDs_m.size(); k++) {
 
@@ -123,7 +122,7 @@ void Database::evaluateQueries() {
 				}
 
 				if (duplicateParameterExists) {
-					tempRelation.select(positionOfDuplicateParameter, positionInParameterVector);
+					tempRelation = tempRelation.select(positionOfDuplicateParameter, positionInParameterVector);
 				}
 				else {
 					//Push ID into vector parametersThatAreIDs_m and push positioInParameterVector into vector parameterPositions_m
@@ -137,10 +136,11 @@ void Database::evaluateQueries() {
 				tempRelation = tempRelation.select(positionInParameterVector, parameterValue);
 			}
 		}
-
+		
 		tempRelation = tempRelation.project(parameterPositions_m);
-
+		
 		tempRelation = tempRelation.rename(parametersThatAreIDs_m);
+		
 
 		//Pring the query. I. e. Make "SK(A,'c') print as SK(A,'c')? Yes(2)"
 		//cout << "THIS WORK? (Printing from Database.cpp class)" << endl << endl;
@@ -156,20 +156,22 @@ void Database::evaluateQueries() {
 			}
 		}
 
+		size_t numTuples = tempRelation.getNumTuplesInRelationForOutput(this->parametersThatAreIDs_m);
 		cout << oss.str() << ")? ";
 		if (tempRelation.getNumTuples() > 0) {
-			cout << "There are more than one tuple here" << endl;
+			cout << "Yes(" << numTuples;
+			cout << ")" << endl;
 		}
 		else {
 			cout << "No" << endl;
 		}
 
 		//Print the tuples (values in the row) in the query involved
+		tempRelation.printTuples(parameterPositions_m, parametersThatAreIDs_m, numTuples);
 
 		//Clear the vectors that we populated with the tempRelation
-		parametersThatAreIDs_m.clear();
+		parametersThatAreIDs_m.clear();	
 		parameterPositions_m.clear();
-
-
 	}
 }	
+

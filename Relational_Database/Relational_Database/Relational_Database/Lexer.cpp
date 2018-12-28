@@ -76,14 +76,10 @@ void Lexer::startState() {
 		break;
 	case '\n':
 		scanner.incrementLineNumber();
-		//if (scanner.peek() != -1) { scanner.incrementLineNumber(); } //comment out for windows
-		//scanner.incrementLineNumber(); comment out for linux
 		scanner.advance();
 		break;
 	case '\r':
 		scanner.incrementLineNumber();
-		//if (scanner.peek() != -1) { scanner.incrementLineNumber(); } //comment out for windows
-		//scanner.incrementLineNumber(); comment out for linux
 		scanner.advance();
 		break;
 	case ' ':
