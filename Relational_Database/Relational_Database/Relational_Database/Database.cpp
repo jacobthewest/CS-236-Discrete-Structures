@@ -5,12 +5,6 @@ Database::Database(vector<Predicate> schemes, vector<Predicate> facts, vector<Pr
 	this->facts_m = facts;
 	this->queries_m = queries;
 	
-	/*cout << "queries_m: ";
-	for (size_t i = 0; i < queries_m.size(); i++) {
-		cout << queries_m.at(i).toString() << " ";
-	}
-	cout << endl << endl;
-	*/
 	//-----------------------------Handling the schemes (adding the tuples)--------------------------------//
 	/*Schemes are lists of attribute names. So by iterating through the schemes vector, we are adding column
 	headings to all of the realtions (aka tables) in the database*/
@@ -84,7 +78,10 @@ void Database::addRowToRelation(Tuple tupleObj) {
 
 	void Database::evaluateQueries() {
 	Relation tempRelation;
+	bool lastQuery = false;
 	for (size_t i = 0; i < queries_m.size(); i++) {
+
+		if (i == queries_m.size() - 1) { lastQuery = true; }
 		
 		//Give the tempRelation a name
 		string tempRelationName = queries_m.at(i).getId(); 
@@ -101,8 +98,6 @@ void Database::addRowToRelation(Tuple tupleObj) {
 		for (size_t j = 0; j < parametersFromTempRelation.size(); j++) {
 
 			//Get the parameter type and the parameter value
-			/*cout << "We are in queries_m.at(" << i << ")" << endl;
-			cout << "We are in parametersFromTempRelation.at(" << j << ")" << endl << endl;*/
 			string parameterType = parametersFromTempRelation.at(j).getType();
 			string parameterValue = parametersFromTempRelation.at(j).getValue();
 			size_t positionInParameterVector = j;
@@ -134,12 +129,12 @@ void Database::addRowToRelation(Tuple tupleObj) {
 		
 		tempRelation = tempRelation.rename(parametersThatAreIDs_m);
 		
-		printTheStuffBeforePrintingTuples(tempRelation, this->parametersThatAreIDs_m, parametersFromTempRelation);
+		printTheStuffBeforePrintingTuples(tempRelation, this->parametersThatAreIDs_m, parametersFromTempRelation, lastQuery);
 		
 		size_t numTuples = tempRelation.getNumTuplesInRelationForOutput(this->parametersThatAreIDs_m);
 
 		//Print the tuples (values in the row) in the query involved
-		tempRelation.printTuples(parametersThatAreIDs_m, numTuples);
+		tempRelation.printTuples(parametersThatAreIDs_m, numTuples, lastQuery);
 
 		//Clear the vectors that we populated with the tempRelation
 		parametersThatAreIDs_m.clear();	
@@ -148,15 +143,14 @@ void Database::addRowToRelation(Tuple tupleObj) {
 }	
 
 void Database::printTheStuffBeforePrintingTuples(Relation tempRelation, vector<string> paramatersThatAreIDs,
-		vector<Parameter> parametersFromTempRelation) {
+		vector<Parameter> parametersFromTempRelation, bool lastQuery) {
 	//Print the query. I. e. Make "SK(A,'c') print as SK(A,'c')? Yes(2)"
-	//cout << "THIS WORK? (Printing from Database.cpp class)" << endl << endl;
 	cout << tempRelation.getRelationName() << "(";
 
 	ostringstream oss;
 	for (size_t z = 0; z < parametersFromTempRelation.size(); z++) {
-		if (parametersFromTempRelation.size() - 1 == z) {
-			oss << parametersFromTempRelation.at(z).getValue();
+		if (z == parametersFromTempRelation.size() - 1) {
+			oss << parametersFromTempRelation.at(z).getValue(); //Last element so no comma needed
 		}
 		else {
 			oss << parametersFromTempRelation.at(z).getValue() << ",";
@@ -170,7 +164,8 @@ void Database::printTheStuffBeforePrintingTuples(Relation tempRelation, vector<s
 		cout << ")" << endl;
 	}
 	else {
-		cout << "No" << endl;
+		if (lastQuery) { cout << "No"; }
+		else { cout << "No" << endl; }
 	}
 }
 

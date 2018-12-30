@@ -32,6 +32,12 @@ public:
 	Relation select(size_t positionInColumnOne, size_t positionInColumnTwo);
 	Relation project(vector<size_t> parameterPositions);
 	Relation rename(vector<string> parametersThatAreIDs);
+	void printTuples(vector<string> parametersThaAreIDs, size_t numTuples, bool lastQuery);
+	void printTuplesForTempTuple(vector<string>& parametersThaAreIDs, Tuple& tempTuple, size_t& j,
+		bool& lastQuery, size_t& numTuplesOutputted);
+	void printSingleTupleWithSpace(bool lastQuery, Tuple tempTuple, size_t tempColumn, size_t j, vector<string> parametersThaAreIDs);
+	void printSingleTupleWithNoSpace(bool lastQuery, Tuple tempTuple, size_t tempColumn, size_t j, 
+		vector<string> parametersThaAreIDs, size_t& numTuplesOutputted);
 
 	//Getters and setters
 	void setRelationName(string relationName) { this->name_m = relationName; }
@@ -40,8 +46,6 @@ public:
 	Scheme getHeader() { return this->header_m; }
 	size_t getNumTuples() { return this->tuples_m.size(); }
 	size_t getNumTuplesInRelationForOutput(vector<string> parametersThatAreIDs);
-	void printTuples(vector<string> parametersThaAreIDs, size_t numTuples);
-
 };
 
 #endif //RELATION_H
