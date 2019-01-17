@@ -50,6 +50,6 @@ int main(int argc, char * argv[])
 
 	//We have now broken out of the while loop and processed everything so far. We are going to print the token vector now.
 	cout << lexerObject.printTheVectorOfTokenPointers();
-	system("pause");
+	//system("pause");
 	return 0;
 }

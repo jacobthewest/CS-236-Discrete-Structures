@@ -123,7 +123,7 @@ void Lexer::singleCharacterState() {
 }
 
 void Lexer::undefinedState() {
-	//CurrentChar is the undefined character/problem
+	//CurrentChar is the undefined character/problem or it is a EOF
 	scanner.setCurrentTypeToUndefined();
 	currentState = START_STATE;
 	switch (scanner.getCurrentChar()) {
@@ -220,6 +220,9 @@ void Lexer::multiLineCommentState() {
 	}
 	if (scanner.getCurrentChar() == -1) {
 		currentState = END_OF_FILE_STATE;
+	}
+	else if (scanner.peek() == -1) {
+		currentState = UNDEFINED_STATE;
 	}
 }
 
