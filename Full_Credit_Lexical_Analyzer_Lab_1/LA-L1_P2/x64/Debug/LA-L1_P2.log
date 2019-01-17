@@ -1,2 +1,3 @@
-﻿  main.cpp
+﻿  Lexer.cpp
+  LINK : C:\Users\jacob\source\repos\CS 236-Discrete Structures\Full_Credit_Lexical_Analyzer_Lab_1\x64\Debug\LA-L1_P2.exe not found or not built by the last incremental link; performing full link
   LA-L1_P2.vcxproj -> C:\Users\jacob\source\repos\CS 236-Discrete Structures\Full_Credit_Lexical_Analyzer_Lab_1\x64\Debug\LA-L1_P2.exe

@@ -218,7 +218,9 @@ void Lexer::multiLineCommentState() {
 		}
 		else if (scanner.getCurrentChar() == '\n') { scanner.incrementLineNumber(); }
 	}
-	endOfMultiLineCommentOrEndOfFileIsTrue();
+	if (scanner.getCurrentChar() == -1) {
+		currentState = END_OF_FILE_STATE;
+	}
 }
 
 void Lexer::stringStartState() {
@@ -292,8 +294,8 @@ void Lexer::whitespaceState() {
 	currentState = START_STATE;
 }
 
-void Lexer::endOfMultiLineCommentOrEndOfFileIsTrue() {
-	if (scanner.getCurrentChar() == '\n' && scanner.peek() == -1) { //This will always be true
+void Lexer::endOfMultiLineCommentOrEndOfFileIsTrue() { // ::ATTENTION:: This function is pointless now ::ATTENTION::
+	if (scanner.getCurrentChar() == '\n' && scanner.peek() == -1) {
 		scanner.incrementLineNumber();
 		scanner.advance();
 		if (scanner.getCurrentChar() == '\n') { currentState = START_STATE; }
