@@ -126,6 +126,7 @@ void Lexer::undefinedState() {
 	//CurrentChar is the undefined character/problem or it is a EOF
 	scanner.setCurrentTypeToUndefined();
 	currentState = START_STATE;
+	if (scanner.peek() == -1) { scanner.advance(); }
 	switch (scanner.getCurrentChar()) {
 	case -1: //Used for undefined strings
 		//valueSoFar.pop_back(); //Comment out for windows
