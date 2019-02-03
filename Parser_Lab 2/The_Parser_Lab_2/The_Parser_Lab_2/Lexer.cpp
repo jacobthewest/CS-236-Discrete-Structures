@@ -112,6 +112,7 @@ void Lexer::undefinedState() {
 	//CurrentChar is the undefined character/problem
 	scanner.setCurrentTypeToUndefined();
 	currentState = START_STATE;
+	if (scanner.peek() == -1) { scanner.advance(); }
 	switch (scanner.getCurrentChar()) {
 	case -1: //Used for undefined strings
 			 //valueSoFar.pop_back(); //Comment out for windows
@@ -204,7 +205,12 @@ void Lexer::multiLineCommentState() {
 		}
 		else if (scanner.getCurrentChar() == '\n') { scanner.incrementLineNumber(); }
 	}
-	endOfMultiLineCommentOrEndOfFileIsTrue();
+	if (scanner.getCurrentChar() == -1) {
+		currentState = END_OF_FILE_STATE;
+	}
+	else if (scanner.peek() == -1) {
+		currentState = UNDEFINED_STATE;
+	}
 }
 
 void Lexer::stringStartState() {
@@ -269,8 +275,9 @@ void Lexer::whitespaceState() {
 	currentState = START_STATE;
 }
 
-void Lexer::endOfMultiLineCommentOrEndOfFileIsTrue() {
-	if (scanner.getCurrentChar() == '\n' && scanner.peek() == -1) { //This will always be true
+void Lexer::endOfMultiLineCommentOrEndOfFileIsTrue(){ 
+	// ::ATTENTION:: This function is pointless now ::ATTENTION::
+	if (scanner.getCurrentChar() == '\n' && scanner.peek() == -1) {
 		scanner.incrementLineNumber();
 		scanner.advance();
 		if (scanner.getCurrentChar() == '\n') { currentState = START_STATE; }

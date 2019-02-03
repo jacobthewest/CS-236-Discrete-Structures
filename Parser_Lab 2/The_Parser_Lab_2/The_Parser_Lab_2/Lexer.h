@@ -29,10 +29,6 @@ public:
 	Lexer(string fileName);
 	~Lexer() {};
 
-	/* Keep complexity down 18 token types Instead of over a dozen if statements, use 1 switch case
-	This function will turn what we have into a token and add it to our vector */
-
-
 	/*Runs the program through all of the states based on the inputs*/
 	void startTheProgram();
 	string printFromScannerClass() { return scanner.printTheVectorOfTokenPointers(); }
@@ -64,16 +60,5 @@ public:
 		}
 		return result;
 	}
-
-	//Lex
-	//	Token getNextToken(TokenType tokenType) {
-	//	Token result = top();
-	//	Token resultType = result.getTokenType();
-	//	if (resultType == EOF || resultType != tokenType) {
-	//		throw result;
-	//	}
-	//	pop();
-	//	return result;
-	//}
 };
 #endif	// LEXER_H
