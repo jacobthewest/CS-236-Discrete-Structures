@@ -234,9 +234,9 @@ void Parser::parseExpression() {
 
 	match(LEFT_PAREN);
 	expressionOss << "(";
-	parseId(expressionOss);
+	parseParameter();
 	parseOperator(expressionOss);
-	parseId(expressionOss);	
+	parseParameter();
 	expressionOss << ")";
 
 	predicateObject.addParameter(Parameter("EXPRESSION", expressionOss.str()));
