@@ -15,6 +15,8 @@ private:
 	DatalogProgram datalogProgramObject;
 	Predicate predicateObject;
 	Rule ruleObject;
+	string expressionString_m;
+	size_t trackingNum_m;
 public:
 	//Constructor
 	Parser() {};
@@ -39,9 +41,9 @@ public:
 	void parseStringList();	
 	void parseIdList();
 	void parseParameter();
-	void parseParameter(bool& doNotPrintBecauseOfExpression);
-	void parseExpression(); 
-	void parseOperator(ostringstream &expressionOss);
+	void parseParameter(bool& doNotPrintBecauseOfExpression, string& expressionString_m, size_t& trackingNum_m);
+	void parseExpression(string& expressionString_m, size_t& trackingNum_m); 
+	void parseOperator(string& expressionString_m);
 	void parseId(ostringstream &expressionOss);
 };
 #endif //PARSER_H

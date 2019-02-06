@@ -2,6 +2,7 @@
 
 Parser::Parser(vector<Token*> tokenList) {
 	index_m = 0;
+	this->trackingNum_m = 2; //Set to 2 because we will always have at least 2 parameters in an expression
 	tokenListCopyForParserClass_m = tokenList;
 	currentToken = tokenListCopyForParserClass_m.at(index_m);
 	parseDatalogProgram();
@@ -225,11 +226,13 @@ void Parser::parseParameter() {
 	}
 	else {
 		//cout << "parsing expression from the parameter function" << endl; system("pause");
-		parseExpression();
+		parseExpression(this->expressionString_m, trackingNum_m);
+		this->expressionString_m = ""; //clear the string after all of the recursion and adding it to the predicateObject
+		this->trackingNum_m = 2;
 	}
 }
 
-void Parser::parseParameter(bool& doNotPrintBecauseOfExpression) {
+void Parser::parseParameter(bool& doNotPrintBecauseOfExpression, string& expressionString_m, size_t& trackingNum_m) {
 	/*
 		parameter	->	STRING
 		parameter	->	ID
@@ -246,45 +249,47 @@ void Parser::parseParameter(bool& doNotPrintBecauseOfExpression) {
 	}
 	else {
 		//cout << "parsing expression from the parameter function" << endl; system("pause");
-		parseExpression();
+		parseExpression(expressionString_m, trackingNum_m);
 	}
 }
 
-void Parser::parseExpression() {
+void Parser::parseExpression(string& expressionString_m, size_t& trackingNum_m) {
 	//expression	-> 	LEFT_PAREN parameter operator parameter RIGHT_PAREN
-	ostringstream expressionOss;
 	bool doNotPrintBecauseOfExpression = false;
 
 	match(LEFT_PAREN);
-	expressionOss << "(";
+	this->trackingNum_m++; //Increment because of a left paren
+	expressionString_m += "(";
 	if (currentToken->getValue() != "(") { 
-		expressionOss << currentToken->getValue();
+		expressionString_m += currentToken->getValue();
 		doNotPrintBecauseOfExpression = true;
 	}
 	//cout << "In parseExpression(), now going to parse the parameter right after the first '('" << endl; system("pause");
-	parseParameter(doNotPrintBecauseOfExpression);
-	parseOperator(expressionOss);
-	if (currentToken->getValue() != "(") {
-		expressionOss << currentToken->getValue(); 
+	parseParameter(doNotPrintBecauseOfExpression, expressionString_m, trackingNum_m);
+	parseOperator(expressionString_m);
+	if (currentToken->getValue() != ")") {
+		expressionString_m += currentToken->getValue();
 		doNotPrintBecauseOfExpression = true;
 	}
-	parseParameter(doNotPrintBecauseOfExpression);
-	expressionOss << ")";
-
-	predicateObject.addParameter(Parameter("EXPRESSION", expressionOss.str()));
-
+	parseParameter(doNotPrintBecauseOfExpression, expressionString_m, trackingNum_m);
+	expressionString_m += ")";
 	match(RIGHT_PAREN);
+	this->trackingNum_m--;
+
+	if (this->trackingNum_m == 2) { //2 represents the original L-paren and R-paren
+		predicateObject.addParameter(Parameter("EXPRESSION", expressionString_m));
+	}
 
 }
-void Parser::parseOperator(ostringstream &expressionOss) {
+void Parser::parseOperator(string& expressionString_m) {
 	//operator	->	ADD | MULTIPLY
 	if (currentToken->getTokenType() == ADD) {
 		match(ADD);
-		expressionOss << "+";
+		expressionString_m += "+";
 	}
 	if (currentToken->getTokenType() == MULTIPLY) {
 		match(MULTIPLY);
-		expressionOss << "*";
+		expressionString_m += "*";
 	}
 }
 
