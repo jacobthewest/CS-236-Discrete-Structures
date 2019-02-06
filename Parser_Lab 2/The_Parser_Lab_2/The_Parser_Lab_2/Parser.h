@@ -39,6 +39,7 @@ public:
 	void parseStringList();	
 	void parseIdList();
 	void parseParameter();
+	void parseParameter(bool& doNotPrintBecauseOfExpression);
 	void parseExpression(); 
 	void parseOperator(ostringstream &expressionOss);
 	void parseId(ostringstream &expressionOss);

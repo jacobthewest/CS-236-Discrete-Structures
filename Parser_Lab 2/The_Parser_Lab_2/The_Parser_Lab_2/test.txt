@@ -1,16 +1,17 @@
 
 
 Schemes:
-  bob(A,B)
+  bobbob(B,A)
 
 Facts:
   bob('4','2').
 
 Rules:
-  bob(A,B) :- bob(B,A,(A+B)).
+  bob(A,B) :- bob(B,A,('hey'*'bud')).
 
 Queries:
-  bob(X,Y)?
+  bob(X,Y,(Z+    'hi'))?
+  bob(X,Y,(Z*Y))?
 
 
 # extra tokens at end of file

@@ -217,7 +217,6 @@ void Parser::parseParameter() {
 		parameter	->	ID
 		parameter	->	expression
 	*/
-
 	if (currentToken->getTokenType() == STRING || currentToken->getTokenType() == ID) {
 		TokenType tokenType;
 		tokenType = currentToken->getTokenType();
@@ -225,18 +224,51 @@ void Parser::parseParameter() {
 		match(currentToken->getTokenType());
 	}
 	else {
+		//cout << "parsing expression from the parameter function" << endl; system("pause");
 		parseExpression();
 	}
 }
+
+void Parser::parseParameter(bool& doNotPrintBecauseOfExpression) {
+	/*
+		parameter	->	STRING
+		parameter	->	ID
+		parameter	->	expression
+	*/
+	if (currentToken->getTokenType() == STRING || currentToken->getTokenType() == ID) {
+		TokenType tokenType;
+		tokenType = currentToken->getTokenType();
+		if (!doNotPrintBecauseOfExpression) {
+			predicateObject.addParameter(Parameter(currentToken->tokenTypeToString(tokenType), currentToken->getValue()));
+			doNotPrintBecauseOfExpression = false;
+		}		
+		match(currentToken->getTokenType());
+	}
+	else {
+		//cout << "parsing expression from the parameter function" << endl; system("pause");
+		parseExpression();
+	}
+}
+
 void Parser::parseExpression() {
 	//expression	-> 	LEFT_PAREN parameter operator parameter RIGHT_PAREN
 	ostringstream expressionOss;
+	bool doNotPrintBecauseOfExpression = false;
 
 	match(LEFT_PAREN);
 	expressionOss << "(";
-	parseParameter();
+	if (currentToken->getValue() != "(") { 
+		expressionOss << currentToken->getValue();
+		doNotPrintBecauseOfExpression = true;
+	}
+	//cout << "In parseExpression(), now going to parse the parameter right after the first '('" << endl; system("pause");
+	parseParameter(doNotPrintBecauseOfExpression);
 	parseOperator(expressionOss);
-	parseParameter();
+	if (currentToken->getValue() != "(") {
+		expressionOss << currentToken->getValue(); 
+		doNotPrintBecauseOfExpression = true;
+	}
+	parseParameter(doNotPrintBecauseOfExpression);
 	expressionOss << ")";
 
 	predicateObject.addParameter(Parameter("EXPRESSION", expressionOss.str()));
