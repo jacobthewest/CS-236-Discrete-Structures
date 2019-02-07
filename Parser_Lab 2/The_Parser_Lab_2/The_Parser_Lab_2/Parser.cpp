@@ -247,9 +247,12 @@ void Parser::parseParameter(bool& doNotPrintBecauseOfExpression, string& express
 		}		
 		match(currentToken->getTokenType());
 	}
-	else {
+	else if (currentToken->getTokenType() == LEFT_PAREN) {
 		//cout << "parsing expression from the parameter function" << endl; system("pause");
 		parseExpression(expressionString_m, trackingNum_m);
+	}
+	else {
+		throw string(currentToken->toString());
 	}
 }
 
@@ -264,10 +267,9 @@ void Parser::parseExpression(string& expressionString_m, size_t& trackingNum_m) 
 		expressionString_m += currentToken->getValue();
 		doNotPrintBecauseOfExpression = true;
 	}
-	//cout << "In parseExpression(), now going to parse the parameter right after the first '('" << endl; system("pause");
 	parseParameter(doNotPrintBecauseOfExpression, expressionString_m, trackingNum_m);
 	parseOperator(expressionString_m);
-	if (currentToken->getValue() != ")") {
+	if (currentToken->getValue() != ")" && currentToken->getValue() != "(") {
 		expressionString_m += currentToken->getValue();
 		doNotPrintBecauseOfExpression = true;
 	}
@@ -287,9 +289,12 @@ void Parser::parseOperator(string& expressionString_m) {
 		match(ADD);
 		expressionString_m += "+";
 	}
-	if (currentToken->getTokenType() == MULTIPLY) {
+	else if (currentToken->getTokenType() == MULTIPLY) {
 		match(MULTIPLY);
 		expressionString_m += "*";
+	}
+	else {
+		throw string(currentToken->toString());
 	}
 }
 

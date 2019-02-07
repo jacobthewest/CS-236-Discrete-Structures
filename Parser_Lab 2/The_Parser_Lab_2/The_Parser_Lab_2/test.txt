@@ -5,7 +5,7 @@ Facts:
   bob('4','2').
 
 Rules:
-  bob(A,B) :- bob(B,A,(('hey'*'bud')+A)).
+  bob(A,B) :- bob(B,A,(B*(('hey'*'bud')+A))).
 
 Queries:
   bob(X,Y,(Z+'hi'))?
