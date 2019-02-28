@@ -38,11 +38,11 @@ string Predicate::toString() {
 	return oss.str();
 }
 
-vector<Parameter> Predicate::getVectorOfParameters() { 
-	/*cout << "Vector of parameters: " << endl;
-	for (size_t i = 0; i < parametersVector.size(); i++) {
-		cout << "\tType at " << i << " :" << parametersVector.at(i).getType() << endl;
-		cout << "\tValue at " << i << " :" << parametersVector.at(i).getValue() << endl << endl;
-	}*/
-	return this->parametersVector; 
-}
+//vector<Parameter> Predicate::getVectorOfParameters() { 
+//	cout << "Vector of parameters: " << endl;
+//	for (size_t i = 0; i < parametersVector.size(); i++) {
+//		cout << "\tType at " << i << " :" << parametersVector.at(i).getType() << endl;
+//		cout << "\tValue at " << i << " :" << parametersVector.at(i).getValue() << endl << endl;
+//	}
+//	return this->parametersVector; 
+//}

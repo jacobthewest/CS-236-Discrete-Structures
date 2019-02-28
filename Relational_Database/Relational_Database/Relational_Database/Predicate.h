@@ -21,7 +21,7 @@ public:
 	Predicate(string identifier, vector<Parameter> parameterList);
 	~Predicate() {};
 
-	vector<Parameter> getVectorOfParameters();
+	vector<Parameter> getVectorOfParameters() { return this->parametersVector; }
 	string getId() { return this->id; }
 	string toString();
 	void addParameter(Parameter parameterToAdd);
