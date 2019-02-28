@@ -61,6 +61,6 @@ int main(int argc, char * argv[])
 		cout << "  " << offendingToken;
 	}
 	
-	system("pause");
+	//system("pause");
 	return 0;
 }
