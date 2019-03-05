@@ -85,6 +85,10 @@ void Lexer::startState() {
 	case ' ':
 		currentState = WHITESPACE_STATE;
 		break;
+	case '\t':
+		scanner.advance();
+		currentState = START_STATE;
+		break;
 	case -1:
 		currentState = END_OF_FILE_STATE;
 		break;
