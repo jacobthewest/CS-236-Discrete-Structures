@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Datalog_Interpreter", "Datalog_Interpreter\Datalog_Interpreter.vcxproj", "{17973858-0FE5-4CDB-9BA4-96D26EE7A8CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17973858-0FE5-4CDB-9BA4-96D26EE7A8CE}.Debug|x64.ActiveCfg = Debug|x64
+		{17973858-0FE5-4CDB-9BA4-96D26EE7A8CE}.Debug|x64.Build.0 = Debug|x64
+		{17973858-0FE5-4CDB-9BA4-96D26EE7A8CE}.Debug|x86.ActiveCfg = Debug|Win32
+		{17973858-0FE5-4CDB-9BA4-96D26EE7A8CE}.Debug|x86.Build.0 = Debug|Win32
+		{17973858-0FE5-4CDB-9BA4-96D26EE7A8CE}.Release|x64.ActiveCfg = Release|x64
+		{17973858-0FE5-4CDB-9BA4-96D26EE7A8CE}.Release|x64.Build.0 = Release|x64
+		{17973858-0FE5-4CDB-9BA4-96D26EE7A8CE}.Release|x86.ActiveCfg = Release|Win32
+		{17973858-0FE5-4CDB-9BA4-96D26EE7A8CE}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CC7837AA-4521-4181-9EF8-80FA2E2666D7}
+	EndGlobalSection
+EndGlobal
