@@ -17,5 +17,7 @@ public:
 	~Parameter() {};
 	string getType() { return type_m; }
 	string getValue() { return value_m; }
+	void setType(string type) { type_m = type; }
+	void setValue(string value) { value_m = value; }
 };
 #endif //PARAMETER_H

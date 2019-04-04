@@ -241,15 +241,24 @@ void Database::evaluateSingleRule(Rule ruleToBeEvaluated) {
 
 	//Join
 	Relation newRelation;
-	newRelation.join_function(relationsFromPredicates);
+	newRelation = newRelation.join_function(relationsFromPredicates);
 
 	//Project
-	vector<size_t> parameterPositionsWeCareAboutFromNewScheme;
-	//newRelation = newRelation.projectLab4();
+	newRelation.setRelationName(ruleToBeEvaluated.getPredicate().getId());
 
-	//Rename
+	vector<size_t> parameterPositionsWeCareAboutFromNewScheme;
+	vector<Parameter> schemeOfHeadPredicateFromID;
+	schemeOfHeadPredicateFromID = getRuleHeadPredAsVectorOfParams(ruleToBeEvaluated);
+	
+	parameterPositionsWeCareAboutFromNewScheme = 
+		ruleToBeEvaluated.getPositionOfParamsWeCareAbout(newRelation.getHeader().getParameterList(), schemeOfHeadPredicateFromID);
+	
+	//Rename and Project at the same time
+	newRelation = newRelation.projectNewRelation(newRelation, parameterPositionsWeCareAboutFromNewScheme, 
+		schemeOfHeadPredicateFromID, ruleToBeEvaluated.getPredicate().getId());
 
 	//Union
+	union_function(newRelation);
 }
 
 Relation Database::evaluatePredicate(Predicate predicate) {
@@ -307,4 +316,97 @@ Relation Database::evaluatePredicate(Predicate predicate) {
 		parameterPositions_m.clear();
 
 		return tempRelation;
+}
+
+vector<Parameter> Database::getRuleHeadPredAsVectorOfParams(Rule ruleToBeEvaluated) {
+	vector<Parameter> returnMe = ruleToBeEvaluated.getPredicate().getVectorOfParameters();
+	return returnMe;
+}
+
+void Database::union_function(Relation currRelation) {
+	string nameOfRelation = currRelation.getRelationName();
+	set<Tuple> mySet;
+	Relation relationFromMap = relationMap_m.find(nameOfRelation)->second;
+	mySet = relationFromMap.getTuples();
+
+	for (Tuple myTuple : mySet) {
+		if (mySet.count(myTuple) == 0) {
+			//The tuple does not exits
+			currRelation.addTuple(myTuple);
+
+			//Print out the tuple
+		}
+	}
+	//adrowtorelation
+	relationFromMap = currRelation;
+	relationMap_m.find(nameOfRelation)->second = relationFromMap;
+	//We are now done
+}
+
+void Database::printLab4(bool lastLastRule) {
+	cout << "Rule Evaluation\n";
+
+	for (size_t i = 0; i < rules_m.size(); i++) {
+		cout << rules_m.at(i).toString();
+		cout << "\n";
+
+		Predicate relPredicate = rules_m.at(i).getPredicate();
+		string relName = relPredicate.getId();
+		Relation tempRel = relationMap_m.find(relName)->second;
+		set<Tuple> tempTuples;
+		size_t numTuples = tempTuples.size();
+		tempTuples = tempRel.getTuples();
+		vector<Parameter> params = tempRel.getHeader().getParameterList();
+		vector<string> parametersThatAreIDsPrintLab4;
+
+		for (size_t j = 0; j < params.size(); j++) {
+			parametersThatAreIDsPrintLab4.push_back(params.at(j).getValue());
+		}
+
+		tempRel.printTuplesLab4(parametersThatAreIDsPrintLab4, numTuples, lastLastRule);
+	}
+
+	if (numTimesCycledThroughRules_m > 1) {
+		for (size_t i = 0; i < rules_m.size(); i++) {
+			cout << rules_m.at(i).toString() << endl;
+		}
+	}
+
+	cout << endl << "Schemes populated after " << numTimesCycledThroughRules_m << " passes through the Rules.\n\n";
+	cout << "Query Evaluation" << endl;
+
+}
+
+void Database::printLab4(bool lastLastRule) {
+	cout << "Rule Evaluation\n";
+
+	for (size_t i = 0; i < rules_m.size(); i++) {
+		cout << rules_m.at(i).toString();
+		cout << "\n";
+
+		Predicate relPredicate = rules_m.at(i).getPredicate();
+		string relName = relPredicate.getId();
+		Relation tempRel = relationMap_m.find(relName)->second;
+		set<Tuple> tempTuples;
+		size_t numTuples = tempTuples.size();
+		tempTuples = tempRel.getTuples();
+		vector<Parameter> params = tempRel.getHeader().getParameterList();
+		vector<string> parametersThatAreIDsPrintLab4;
+
+		for (size_t j = 0; j < params.size(); j++) {
+			parametersThatAreIDsPrintLab4.push_back(params.at(j).getValue());
+		}
+
+		tempRel.printTuplesLab4(parametersThatAreIDsPrintLab4, numTuples, lastLastRule);
+	}
+
+	if (numTimesCycledThroughRules_m > 1) {
+		for (size_t i = 0; i < rules_m.size(); i++) {
+			cout << rules_m.at(i).toString() << endl;
+		}
+	}
+
+	cout << endl << "Schemes populated after " << numTimesCycledThroughRules_m << " passes through the Rules.\n\n";
+	cout << "Query Evaluation" << endl;
+
 }

@@ -31,3 +31,16 @@ string Rule::toString() {
 	oss << ".";
 	return oss.str();
 }
+
+vector<size_t> Rule::getPositionOfParamsWeCareAbout(vector<Parameter> combinedScheme, vector<Parameter> schemeOfProject) {
+	vector<size_t> returnMe;
+	for (size_t i = 0; i < schemeOfProject.size(); i++) {
+		for (size_t j = 0; j < combinedScheme.size(); j++) {
+			if (schemeOfProject.at(i).getValue() == combinedScheme.at(j).getValue()) {
+				returnMe.push_back(j);
+			}
+		}
+	}
+
+	return returnMe;
+}

@@ -1,3 +1,2 @@
 ﻿  Database.cpp
-Relation.obj : error LNK2019: unresolved external symbol "public: class Scheme __thiscall Relation::combineSchemes(class std::vector<class Relation,class std::allocator<class Relation> >)" (?combineSchemes@Relation@@QAE?AVScheme@@V?$vector@VRelation@@V?$allocator@VRelation@@@std@@@std@@@Z) referenced in function "public: class Relation __thiscall Relation::join_function(class std::vector<class Relation,class std::allocator<class Relation> >)" (?join_function@Relation@@QAE?AV1@V?$vector@VRelation@@V?$allocator@VRelation@@@std@@@std@@@Z)
-C:\Users\jacob\source\repos\CS 236-Discrete Structures\Datalog Interpreter_Lab_4\Datalog_Interpreter\Debug\Datalog_Interpreter.exe : fatal error LNK1120: 1 unresolved externals
+  Datalog_Interpreter.vcxproj -> C:\Users\jacob\source\repos\CS 236-Discrete Structures\Datalog Interpreter_Lab_4\Datalog_Interpreter\Debug\Datalog_Interpreter.exe

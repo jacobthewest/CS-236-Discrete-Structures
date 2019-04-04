@@ -44,8 +44,11 @@ public:
 	void evaluateRules();
 	void evaluateSingleRule(Rule ruleToBeEvaluated);
 	Relation evaluatePredicate(Predicate predicate);
-
+	vector<Parameter> getRuleHeadPredAsVectorOfParams(Rule ruleToBeEvaluated);
 	size_t findTotalTuples();
+	void union_function(Relation newRelation);
+	void printLab4(bool lastLastRule);
+
 };
 
 #endif //DATABASE_H

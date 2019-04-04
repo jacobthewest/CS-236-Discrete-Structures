@@ -20,7 +20,7 @@ private:
 
 public:
 
-	//Constructors
+	//Constructors			
 	Relation() {};
 	Relation(string name, Scheme header); //Can be initialized with an empty set of tuples
 	~Relation() {};
@@ -53,11 +53,11 @@ public:
 	//Project 4 Functions
 	Relation join_function(vector<Relation> relationsFromPredicates);
 	Scheme combineSchemes(vector<Relation> relationsFromPredicates);
-	//Relation union_unction();
 	bool isJoinable(Tuple t1, Tuple t2, Scheme s1, Scheme s2);
 	Tuple combineTuples(Tuple t1, Tuple t2, Scheme s1, Scheme s2, Scheme newSchemeForRelation);
 	set<Tuple> getTuples() { return tuples_m; }
-
+	Relation projectNewRelation(Relation newRelation, vector<size_t> parameterPositionsWeCareAboutFromNewScheme, 
+		vector<Parameter> columnsWeNeeds, string stringOfNewScheme);
 };
 
 #endif //RELATION_H

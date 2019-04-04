@@ -297,7 +297,10 @@ Relation Relation::join_function(vector<Relation> relationsFromPredicates) {
 		//Pop the "old new" relation
 		relationsFromPredicates.erase(relationsFromPredicates.begin());
 
-		if (relationsFromPredicates.size() == 1) { return relationsFromPredicates.at(0); }
+		if (relationsFromPredicates.size() == 1) { 
+			relationsFromPredicates.at(0).setHeader(newSchemeForRelation);
+			return relationsFromPredicates.at(0); 
+		}
 	}
 }
 
@@ -380,7 +383,7 @@ Relation Relation::renameLab4(vector<string> parametersThatAreIDs) {
 	return relationToReturn;
 }
 
-Scheme combineSchemes(vector<Relation> relationsFromPredicates) {
+Scheme Relation::combineSchemes(vector<Relation> relationsFromPredicates) {
 	size_t numSchemesToCombine;
 	numSchemesToCombine = relationsFromPredicates.size();
 
@@ -506,4 +509,42 @@ bool Relation::isJoinable(Tuple t1, Tuple t2, Scheme s1, Scheme s2) {
 
 	//Now we are at the end and we have worked through everything and it is all chill to join.
 	return true;
+}
+
+Relation Relation::projectNewRelation(Relation newEmptyRelation, vector<size_t> parameterPositionsWeCareAboutFromNewScheme, 
+	vector<Parameter> columnsWeNeed, string columnsWeNeedAsString) {
+	vector<Parameter> columns = newEmptyRelation.getHeader().getParameterList();
+	Relation cleanedRelation;
+
+	//Cleaning up the tuples in the columns we don't need
+	set<Tuple> tuplesOfRelation = newEmptyRelation.getTuples();
+	//How the tuples are structured
+		/*
+			Relation
+				tuples_m
+					tuples_m:: each index in the tuple matches with the scheme header
+		*/
+	for (Tuple t1 : tuplesOfRelation) {
+		Tuple cleanedTuple;
+		for (size_t i = 0; i < parameterPositionsWeCareAboutFromNewScheme.size(); i++) {
+			for (size_t j = 0; j < columns.size(); j++) {
+				if (columns.at(j).getValue() == columnsWeNeed.at(i).getValue()) {
+					//We found a column that we care about!
+					cleanedTuple.setRelationName(columnsWeNeedAsString);
+					//For the rename part of all of this ^^^^
+					cleanedTuple.addToTupleList(t1.getElementFromTupleList(j));
+				}
+			}
+		}
+		cleanedRelation.addTuple(cleanedTuple);
+	}
+	//Tuples are now cleaned and columns re-ordered
+
+	//This is all renaming stuff below
+	cleanedRelation.setRelationName(columnsWeNeedAsString);
+	Scheme tempScheme;
+	tempScheme.addParameterList(columnsWeNeed);
+	cleanedRelation.setHeader(tempScheme);
+
+	return cleanedRelation;
 }
