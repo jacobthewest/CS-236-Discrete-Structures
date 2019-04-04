@@ -1,10 +1,12 @@
 #include "Database.h"
 
-Database::Database(vector<Predicate> schemes, vector<Predicate> facts, vector<Predicate> queries) {
+Database::Database(vector<Predicate> schemes, vector<Predicate> facts, vector<Rule> rules, vector<Predicate> queries) {
 	this->schemes_m = schemes;
 	this->facts_m = facts;
+	this->rules_m = rules;
 	this->queries_m = queries;
-	
+	this->numTimesCycledThroughRules_m = 0;
+
 	//-----------------------------Handling the schemes (adding the tuples)--------------------------------//
 	/*Schemes are lists of attribute names. So by iterating through the schemes vector, we are adding column
 	headings to all of the realtions (aka tables) in the database*/
@@ -23,9 +25,9 @@ Database::Database(vector<Predicate> schemes, vector<Predicate> facts, vector<Pr
 	}
 
 	//-----------------------------Handling the facts (adding the tuples)--------------------------------//
-	/*Facts are what hold the weird string things (like 'Snoopy' or '1234'. So to 
-	populate the vector of strings for our Tuple class, we need to get each item in our 
-	facts vector(which is found in 	our datalogProgram class).Each position in our facts 
+	/*Facts are what hold the weird string things (like 'Snoopy' or '1234'. So to
+	populate the vector of strings for our Tuple class, we need to get each item in our
+	facts vector(which is found in 	our datalogProgram class).Each position in our facts
 	vector holds all of the strings (or tuple values) for a row in our table(aka relation)*/
 	for (size_t i = 0; i < facts_m.size(); i++) {
 		Tuple tupleObj;
@@ -76,7 +78,7 @@ void Database::addRowToRelation(Tuple tupleObj) {
 													 so the current relation is up to date.*/
 }
 
-	void Database::evaluateQueries() {
+void Database::evaluateQueries() {
 	Relation tempRelation;
 	bool lastQuery = false;
 	for (size_t i = 0; i < queries_m.size(); i++) {
@@ -179,4 +181,130 @@ void Database::checkForDuplicateParameters(vector<string>& parametersThatAreIDs_
 			break;
 		}
 	}
+}
+
+void Database::evaluateRules() {
+	bool thereWasAChange = true;
+	bool lastLastRule;
+
+	while (thereWasAChange) {
+		numTimesCycledThroughRules_m++;
+
+		size_t tuplesBefore;
+		size_t tuplesAfter;
+
+		tuplesBefore = findTotalTuples();
+		tuplesAfter = tuplesBefore;
+
+		bool lastRule = false;
+		for (size_t i = 0; i < rules_m.size(); i++) {
+			//predicateRelationsFromCurrentRule_m.clear(); //Make it so other rule evaluations don't interfere here.
+
+			if (i == rules_m.size() - 1) { lastRule = true; }
+
+			evaluateSingleRule(rules_m.at(i));
+			lastLastRule = lastRule;
+		}
+
+		tuplesAfter = findTotalTuples();
+		if (tuplesAfter == tuplesBefore) { thereWasAChange = false; }
+	}
+
+	//printLab4(lastLastRule);
+}
+
+size_t Database::findTotalTuples() {
+	size_t totalTuples = 0;
+	for (size_t i = 0; i < schemes_m.size(); i++) {
+		//Create temp variables
+		string tempMapString = schemes_m.at(i).getId();
+		Relation tempMapRelation;
+
+		//Get the map
+		tempMapRelation = relationMap_m.find(tempMapString)->second;
+		totalTuples += tempMapRelation.getNumTuples();
+	}
+
+	return totalTuples;
+}
+
+void Database::evaluateSingleRule(Rule ruleToBeEvaluated) {
+	size_t numPredicates = ruleToBeEvaluated.getPredicateList().size();
+
+	vector<Relation> relationsFromPredicates;
+
+	//Evaluate Predicates
+	for (size_t i = 0; i < numPredicates; i++) {
+		Relation tempRel = evaluatePredicate(ruleToBeEvaluated.getPredicateList().at(i));
+		relationsFromPredicates.push_back(tempRel);
+	}
+
+	//Join
+	Relation newRelation;
+	newRelation.join_function(relationsFromPredicates);
+
+	//Project
+	vector<size_t> parameterPositionsWeCareAboutFromNewScheme;
+	//newRelation = newRelation.projectLab4();
+
+	//Rename
+
+	//Union
+}
+
+Relation Database::evaluatePredicate(Predicate predicate) {
+	Relation tempRelation;
+	bool lastQuery = false;
+
+		//Give the tempRelation a name
+		string tempRelationName = predicate.getId();
+
+		/*Get the parameters in the temp relation. If the query was "SK(A,'c')" then the parameters would be "A,'c'"*/
+		vector<Parameter> parametersFromTempRelation = predicate.getVectorOfParameters();
+
+		//Find the current relation that our query is asking for in our map of relations and set it to foundRelation
+		Relation foundRelation = relationMap_m.find(tempRelationName)->second;
+		tempRelation = foundRelation; //Set the relations to each other.
+
+		//Loop through the parameters in our tempRelation.
+		//If the query was "SK(A,'c')" then the parameters in our tempRelation would be "A,'c'"* /
+		for (size_t j = 0; j < parametersFromTempRelation.size(); j++) {
+
+			//Get the parameter type and the parameter value
+			string parameterType = parametersFromTempRelation.at(j).getType();
+			string parameterValue = parametersFromTempRelation.at(j).getValue();
+			size_t positionInParameterVector = j;
+
+			if (parameterType == "ID") {
+
+				bool duplicateParameterExists = false;
+				size_t positionOfDuplicateParameter = 0;
+
+				checkForDuplicateParameters(parametersThatAreIDs_m, duplicateParameterExists, positionOfDuplicateParameter, parameterValue);
+
+				if (duplicateParameterExists) {
+					tempRelation = tempRelation.select(positionOfDuplicateParameter, positionInParameterVector);
+				}
+				else {
+					//Push ID into vector parametersThatAreIDs_m and push positioInParameterVector into vector parameterPositions_m
+					parametersThatAreIDs_m.push_back(parameterValue); /*parameterValue is an ID like "A". So in our example query of
+																	  "SK(A,'c')", "A" would be an ID that would be added here and
+																	  'c' would be added in the STRING elseif part of this if statement*/
+					parameterPositions_m.push_back(positionInParameterVector);
+				}
+			}
+			else if (parameterType == "STRING") {
+				tempRelation = tempRelation.select(positionInParameterVector, parameterValue);
+			}
+		}
+
+		tempRelation = tempRelation.projectLab4(parameterPositions_m);
+
+		tempRelation = tempRelation.renameLab4(parametersThatAreIDs_m);
+
+		//Clear the vectors that we populated with the tempRelation
+		parametersThatAreIDs_m.clear();
+		parameterPositions_m.clear();
+
+		return tempRelation;
 }

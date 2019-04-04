@@ -1,7 +1,5 @@
 /**********************
 Jacob West
-Lexical Analyzer
-CS 236 Section 3
 jacobthewest@gmail.com
 **********************/
 
@@ -54,9 +52,9 @@ int main(int argc, char * argv[])
 	try {
 		Parser parserObj(copyOfVectorOfTokenPointers);
 		DatalogProgram datalogProgramObject = parserObj.getDatalogProgramObject();
-		Database databaseObject(datalogProgramObject.getSchemes(), datalogProgramObject.getFacts()
-			, datalogProgramObject.getQueries());
-		
+		Database databaseObject(datalogProgramObject.getSchemes(), datalogProgramObject.getFacts(),
+			datalogProgramObject.getRules(), datalogProgramObject.getQueries());
+		databaseObject.evaluateRules();
 		databaseObject.evaluateQueries();
 	}
 	catch (string offendingToken) { //Catches a string, not a token
@@ -64,6 +62,6 @@ int main(int argc, char * argv[])
 		cout << "  " << offendingToken;
 	}
 
-	//system("pause");
+	system("pause");
 	return 0;
 }

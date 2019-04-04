@@ -262,8 +262,46 @@ void Relation::printSingleTupleWithNoSpace(bool lastQuery, Tuple tempTuple, size
 	numTuplesOutputted = 0; // Set numOutputted to zero so we can start printing for a new row				
 }
 
-void Relation::join_funtion() {}
-void Relation::union_unction() {
+Relation Relation::join_function(vector<Relation> relationsFromPredicates) {
+
+	//CombineSchemes
+	Scheme newSchemeForRelation;
+	newSchemeForRelation = combineSchemes(relationsFromPredicates);
+
+	while (true) {
+		Relation r1 = relationsFromPredicates.at(0);
+		Relation r2 = relationsFromPredicates.at(1);
+		Relation tempRel;
+
+		set<Tuple> set1 = r1.getTuples();
+		set<Tuple> set2 = r2.getTuples();
+
+		Scheme s1 = r1.getHeader();
+		Scheme s2 = r2.getHeader();
+
+		for (Tuple t1 : set1) {
+			for (Tuple t2 : set2) {
+				//isJoinable
+				if (isJoinable(t1, t2, s1, s2)) {
+					//combineTuples
+					// join t1 and t2 to make tuple t. add tuple t to relation r
+					Tuple tempTuple = combineTuples(t1, t2, s1, s2, newSchemeForRelation);
+					tempRel.addTuple(tempTuple);
+				}
+			}
+		}
+
+		//We have now worked through the relations. Time to fix the Relations in our vector
+		relationsFromPredicates.at(1) = tempRel;
+
+		//Pop the "old new" relation
+		relationsFromPredicates.erase(relationsFromPredicates.begin());
+
+		if (relationsFromPredicates.size() == 1) { return relationsFromPredicates.at(0); }
+	}
+}
+
+//void Relation::union_unction() {
 	/*make the scheme s for the result relation
 	(combine r1's scheme with r2's scheme)
 
@@ -279,4 +317,193 @@ void Relation::union_unction() {
 
 					end for
 					end for*/
+//}
+
+Relation Relation::projectLab4(vector<size_t> parameterPositions) {
+	/*Create a reltion and give it the name and header of the current relation we are working in*/
+	Relation relationToReturn;
+	relationToReturn.setRelationName(this->name_m);
+	relationToReturn.setHeader(this->header_m);
+
+	//Make a tuple set iterator;
+	set<Tuple>::iterator tuples_mIterator = tuples_m.begin();
+
+
+	//Iterate through every tuple that we have for the relation that we are currently working in
+	for (size_t i = 0; i < tuples_m.size(); i++) {
+		//A tuple to project (add) to our tempRelationToReturn at the end of this function
+		Tuple tupleToProject;
+
+		//Create a tempTuple
+		Tuple tempTuple = *tuples_mIterator;
+
+		//Iterate through all of the tuple values that the tempTuple has and add them to the tupleToProject
+		for (size_t j = 0; j < parameterPositions.size(); j++) {
+			size_t getValueFromTupleListAtThisParameterPosition = parameterPositions.at(j);
+			string tupleValueToAdd = tempTuple.getElementFromTupleList(getValueFromTupleListAtThisParameterPosition);
+			tupleToProject.addToTupleList(tupleValueToAdd);
+		}
+
+		//Add tupleToProject (the tuple we have been straightup loading with tuple values) to the relation
+		relationToReturn.addTuple(tupleToProject);
+
+
+		tuples_mIterator++;
+	}
+
+
+	//In case tuples_m is empty then we will send back an empty relation
+	if (tuples_m.size() == 0) {
+		Relation emptyRelation;
+		emptyRelation.setRelationName(this->getRelationName());
+		emptyRelation.setHeader(this->getHeader());
+		return emptyRelation;
+	}
+	else { return relationToReturn; }
+}
+
+Relation Relation::renameLab4(vector<string> parametersThatAreIDs) {
+	/*The rename operation changes the scheme of the relation. The resulting relation has the
+	same tuples (and name) as the original*/
+	Relation relationToReturn;
+	relationToReturn.name_m = this->name_m;
+	relationToReturn.tuples_m = this->tuples_m;	
+
+	/*This will set the parameterlist for relationToReturn. In our solution so far, we have only interacted with the Scheme
+	class in our Database class constructor when we added the parameters to the data member schemes_m through the addParameterList
+	function. Right now, relationToReturn doesn't have a populated vector<Parameter> parameterList_m set for it's header_m datamember.
+	What we do below will fill that up for us.*/
+	Scheme newHeader;
+	newHeader = header_m.setParameterListForRenameFunctionLab4(parametersThatAreIDs);
+	relationToReturn.setHeader(newHeader);
+
+	return relationToReturn;
+}
+
+Scheme combineSchemes(vector<Relation> relationsFromPredicates) {
+	size_t numSchemesToCombine;
+	numSchemesToCombine = relationsFromPredicates.size();
+
+	Scheme schemeOfNewRelation;
+	vector<Parameter> parameterListForNewRelation;
+
+	if (numSchemesToCombine == 1) {
+		parameterListForNewRelation =
+			relationsFromPredicates.at(0).getHeader().getParameterList();
+	}
+	else {
+		parameterListForNewRelation =
+			relationsFromPredicates.at(0).getHeader().getParameterList();
+		//^^^POOP could be this
+		for (size_t i = 0; i < numSchemesToCombine; i++) {
+
+			if (i != 0) {
+				Scheme schemeFromRelation;
+				schemeFromRelation =
+					relationsFromPredicates.at(i).getHeader();
+				vector<Parameter> parameterListFromCurrentScheme = schemeFromRelation.getParameterList();
+
+
+				for (size_t j = 0; j < parameterListFromCurrentScheme.size(); j++) {
+					Parameter currentParam1 = parameterListFromCurrentScheme.at(j);
+
+					size_t sizeOfParameterListForNewRelation = parameterListForNewRelation.size();
+
+					for (size_t k = 0; k < sizeOfParameterListForNewRelation; k++) {
+						bool addParameter = true;
+						Parameter currentParam2 = parameterListForNewRelation.at(k);
+						bool valuesMatch = false;
+
+						if (currentParam1.getValue() == currentParam2.getValue()) {
+							valuesMatch = true;
+						}
+						//if both true, then don't add. Else add
+						if (valuesMatch) { k = sizeOfParameterListForNewRelation; }
+						if ((k == parameterListForNewRelation.size() - 1) && addParameter) { //bool addParameter is true...
+							parameterListForNewRelation.push_back(currentParam1);
+						} //Add param to new paramList in the new scheme
+					}
+				}
+			}
+		}
+	}
+
+	//Now set the new paramList we have for the new scheme we will return
+	schemeOfNewRelation.addParameterList(parameterListForNewRelation);
+	return schemeOfNewRelation;
+}
+
+Tuple Relation::combineTuples(Tuple t1, Tuple t2, Scheme s1, Scheme s2, Scheme newSchemeForRelation) {
+	Tuple newTuple;
+	vector<string> columnIndexFromNewScheme; //For colum indexes already added
+
+	for (size_t i = 0; i < newSchemeForRelation.getParameterList().size(); i++) {
+		bool alreadyFoundIt = false;
+		string match = newSchemeForRelation.getParameterList().at(i).getValue();
+
+		//Is the column head we need in s1?
+		for (size_t j = 0; j < s1.getParameterList().size(); j++) {
+			string valueFromS1 = s1.getParameterList().at(j).getValue();
+			if (valueFromS1 == match) {
+				//Yes, the column head we need is in s1, so add it to the newTuple
+				string addMe = t1.getElementFromTupleList(j);
+				newTuple.addToTupleList(addMe);
+				j = s1.getParameterList().size(); //Escape this scheme because we found it
+				alreadyFoundIt = true;
+			}
+		}
+
+		if (!alreadyFoundIt) {
+			//Is the column head we need in s2?
+			for (size_t j = 0; j < s2.getParameterList().size(); j++) {
+				string valueFromS2 = s2.getParameterList().at(j).getValue();
+				if (valueFromS2 == match) {
+					//Yes, the column head we need is in s1, so add it to the newTuple
+					string addMe = t2.getElementFromTupleList(j);
+					newTuple.addToTupleList(addMe);
+					j = s2.getParameterList().size(); //Escape this scheme because we found it
+				}
+			}
+		}
+	}
+
+	//New Tuple has been created
+	return newTuple;
+}
+
+bool Relation::isJoinable(Tuple t1, Tuple t2, Scheme s1, Scheme s2) {
+	vector<Parameter> matchingColumns;
+	vector<size_t> s1_columnIndex;
+	vector<size_t> s2_columnIndex;
+
+	//Find the matching columns
+	for (size_t i = 0; i < s1.getParameterList().size(); i++) {
+		for (size_t j = 0; j < s2.getParameterList().size(); j++) {
+			string p1 = s1.getParameterList().at(i).getValue();
+			string p2 = s2.getParameterList().at(j).getValue();
+			if (p1 == p2) {
+				matchingColumns.push_back(s1.getParameterList().at(i));
+				s1_columnIndex.push_back(i);
+				s2_columnIndex.push_back(j);
+			}
+		}
+	}
+
+	if (matchingColumns.size() == 0) { return true; } //No matches so just join away!
+
+	//Now, with the matching columns we will combine the tuples
+	for (size_t i = 0; i < matchingColumns.size(); i++) {
+		//Are the tuple values the same?
+			//Yes, do nothing
+			//No, return false
+		string temp1 = t1.getElementFromTupleList(s1_columnIndex.at(i));
+		string temp2 = t2.getElementFromTupleList(s2_columnIndex.at(i));
+
+		if (temp1 != temp2) {
+			return false;
+		}
+	}
+
+	//Now we are at the end and we have worked through everything and it is all chill to join.
+	return true;
 }

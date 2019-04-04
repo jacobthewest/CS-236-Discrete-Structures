@@ -28,3 +28,18 @@ void Scheme::setParameterListForRenameFunction(vector<string> parametersThatAreI
 		parameterList_m.push_back(tempParameter);
 	}
 }
+
+Scheme Scheme::setParameterListForRenameFunctionLab4(vector<string> parametersThatAreIDs) {
+	Scheme returnMe;
+	vector<Parameter> params;
+	for (size_t i = 0; i < parametersThatAreIDs.size(); i++) {
+
+		//Prepare the parameter to push into the parameterList_m.
+		string parameterValue = parametersThatAreIDs.at(i);
+		Parameter tempParameter("ID", parameterValue);
+
+		params.push_back(tempParameter);
+	}
+	returnMe.addParameterList(params);
+	return returnMe;
+}

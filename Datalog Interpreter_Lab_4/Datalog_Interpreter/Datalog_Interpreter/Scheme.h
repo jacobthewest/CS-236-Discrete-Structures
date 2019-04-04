@@ -22,6 +22,7 @@ public:
 	vector<Parameter> getParameterList() { return this->parameterList_m; }
 	string toString();
 	void setParameterListForRenameFunction(vector<string> parametersThatAreIDs);
+	Scheme setParameterListForRenameFunctionLab4(vector<string> parametersThatAreIDs);
 
 };
 

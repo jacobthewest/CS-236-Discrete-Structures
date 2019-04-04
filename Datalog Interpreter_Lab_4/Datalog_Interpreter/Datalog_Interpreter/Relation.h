@@ -32,6 +32,7 @@ public:
 	Relation select(size_t positionInColumnOne, size_t positionInColumnTwo);
 	Relation project(vector<size_t> parameterPositions);
 	Relation rename(vector<string> parametersThatAreIDs);
+
 	void printTuples(vector<string> parametersThaAreIDs, size_t numTuples, bool lastQuery);
 	void printTuplesForTempTuple(vector<string>& parametersThaAreIDs, Tuple& tempTuple, size_t& j,
 		bool& lastQuery, size_t& numTuplesOutputted);
@@ -46,10 +47,17 @@ public:
 	Scheme getHeader() { return this->header_m; }
 	size_t getNumTuples() { return this->tuples_m.size(); }
 	size_t getNumTuplesInRelationForOutput(vector<string> parametersThatAreIDs);
+	Relation projectLab4(vector<size_t> parameterPositions);
+	Relation renameLab4(vector<string> parametersThatAreIDs);
 
 	//Project 4 Functions
-	void join_funtion();
-	void union_unction();
+	Relation join_function(vector<Relation> relationsFromPredicates);
+	Scheme combineSchemes(vector<Relation> relationsFromPredicates);
+	//Relation union_unction();
+	bool isJoinable(Tuple t1, Tuple t2, Scheme s1, Scheme s2);
+	Tuple combineTuples(Tuple t1, Tuple t2, Scheme s1, Scheme s2, Scheme newSchemeForRelation);
+	set<Tuple> getTuples() { return tuples_m; }
+
 };
 
 #endif //RELATION_H

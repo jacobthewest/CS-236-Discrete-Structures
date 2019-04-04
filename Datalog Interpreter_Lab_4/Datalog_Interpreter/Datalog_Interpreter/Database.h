@@ -17,16 +17,19 @@ private:
 
 	vector<Predicate> schemes_m;
 	vector<Predicate> facts_m;
+	vector<Rule> rules_m;
 	vector<Predicate> queries_m;
 	vector<Relation> relations_m;
 
 	vector<size_t> parameterPositions_m;
 	vector<string> parametersThatAreIDs_m;
+
+	size_t numTimesCycledThroughRules_m;
 public:
 
 	//Constructors
 	Database() {};
-	Database(vector<Predicate> schemes, vector<Predicate> facts, vector<Predicate> queries);
+	Database(vector<Predicate> schemes, vector<Predicate> facts, vector<Rule> rules, vector<Predicate> queries);
 	~Database() {};
 
 	void addRelation(Relation relationObj);
@@ -36,6 +39,13 @@ public:
 		vector<Parameter> parametersFromTempRelation, bool lastQuery);
 	void checkForDuplicateParameters(vector<string>& parametersThatAreIDs_m, bool& duplicateParameterExists, 
 		size_t& positionOfDuplicateParameter, string& parameterValue);
+
+	//Lab 4 Functions
+	void evaluateRules();
+	void evaluateSingleRule(Rule ruleToBeEvaluated);
+	Relation evaluatePredicate(Predicate predicate);
+
+	size_t findTotalTuples();
 };
 
 #endif //DATABASE_H
