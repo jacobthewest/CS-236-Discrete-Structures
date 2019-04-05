@@ -328,10 +328,8 @@ vector<Parameter> Database::getRuleHeadPredAsVectorOfParams(Rule ruleToBeEvaluat
 
 void Database::union_function(Relation currRelation, int currRuleIndex) {
 	string nameOfRelation = currRelation.getRelationName();
-	set<Tuple> mySet;
-	Relation relationFromMap = relationMap_m.find(nameOfRelation)->second;
-	mySet = currRelation.getTuples();
-	set<Tuple> tulpesFromDB = relationFromMap.getTuples();
+	const set<Tuple>& mySet = currRelation.getTuples();
+	Relation& relationFromMap = relationMap_m.find(nameOfRelation)->second;
 
 	vector<Parameter> params = relationFromMap.getHeader().getParameterList();
 	vector<string> parametersThatAreIDs;
@@ -344,9 +342,9 @@ void Database::union_function(Relation currRelation, int currRuleIndex) {
 	cout << rules_m.at(currRuleIndex).toString() << endl;
 
 	for (Tuple myTuple : mySet) {
-		if (tulpesFromDB.count(myTuple) == 0) {
+		if (relationFromMap.count(myTuple) == 0) {
 			//The tuple does not exits
-			currRelation.addTuple(myTuple);
+			relationFromMap.addTuple(myTuple);
 			//Print out the tuple
 			size_t numTuplesOutputted = 0;
 			for (size_t j = 0; j < myTuple.getTupleListSize(); j++) {
@@ -361,7 +359,7 @@ void Database::union_function(Relation currRelation, int currRuleIndex) {
 	}
 	//adrowtorelation
 	
-	relationFromMap.setTuples(currRelation.getTuples());
+	// relationFromMap.setTuples(currRelation.getTuples());
 	relationMap_m.find(nameOfRelation)->second = relationFromMap;
 	//We are now done
 }
