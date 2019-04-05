@@ -177,13 +177,20 @@ size_t Relation::getNumTuplesInRelationForOutput(vector<string> parametersThatAr
 
 void Relation::printTuples(vector<string> parametersThatAreIDs, size_t numTuples, bool lastQuery) {
 
-
 	set<Tuple>::iterator tupleIterator = tuples_m.begin();
+	Tuple tempTuple = *tupleIterator;
+
+
+	if ((tempTuple.getTupleListSize() > 0)) {
+		cout << endl;
+	}
+
 
 	for (size_t i = 0; i < tuples_m.size(); i++) {
 
-		Tuple tempTuple = *tupleIterator;
+		tempTuple = *tupleIterator;
 		size_t numTuplesOutputted = 0;
+
 		
 		for (size_t j = 0; j < tempTuple.getTupleListSize(); j++) {
 			printTuplesForTempTuple(parametersThatAreIDs, tempTuple, j, lastQuery, numTuplesOutputted);

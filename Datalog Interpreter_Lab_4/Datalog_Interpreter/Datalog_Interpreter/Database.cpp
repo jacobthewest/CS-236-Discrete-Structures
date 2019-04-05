@@ -164,10 +164,7 @@ void Database::printTheStuffBeforePrintingTuples(Relation tempRelation, vector<s
 	if (tempRelation.getNumTuples() > 0) {
 		cout << "Yes(" << numTuples;
 		cout << ")";
-		if (!lastQuery) {
-		   cout << endl; 
-		}
-		//Jacob, f lab 4 output for query evaluation gives you a problem, then it is probably
+		//Jacob, if lab 4 output for query evaluation gives you a problem, then it is probably
 		//this endl that is above.
 	}
 	else {

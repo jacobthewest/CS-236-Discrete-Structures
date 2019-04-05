@@ -62,14 +62,6 @@ int main(int argc, char * argv[])
 		cout << "  " << offendingToken;
 	}
 
-	//system("pause");
+	system("pause");
 	return 0;
 }
-
-
-//Problem: Test case 54, on the second pass through the rules, A gets copied by symetric, so tuple
-//values DO change. The test case says that they DONT change. I have no idea where my program has
-//Poor logic for that. Ideas: Maybe in the union function?
-
-
-//Set up: run test case 54, pull up diffchecker.
