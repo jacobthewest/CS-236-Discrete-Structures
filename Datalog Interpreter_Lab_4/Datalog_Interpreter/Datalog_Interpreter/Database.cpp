@@ -164,6 +164,8 @@ void Database::printTheStuffBeforePrintingTuples(Relation tempRelation, vector<s
 	if (tempRelation.getNumTuples() > 0) {
 		cout << "Yes(" << numTuples;
 		cout << ")" << endl;
+		//Jacob, if lab 4 output for query evaluation gives you a problem, then it is probably
+		//this endl that is above.
 	}
 	else {
 		if (lastQuery) { cout << "No"; }
@@ -185,7 +187,6 @@ void Database::checkForDuplicateParameters(vector<string>& parametersThatAreIDs_
 
 void Database::evaluateRules() {
 	bool thereWasAChange = true;
-	bool lastLastRule;
 	int currRuleIndex = -1;
 
 	cout << "Rule Evaluation\n";
@@ -205,7 +206,6 @@ void Database::evaluateRules() {
 			if (i == rules_m.size() - 1) { lastRule = true; }
 
 			evaluateSingleRule(rules_m.at(i), currRuleIndex);
-			lastLastRule = lastRule;
 		}
 		currRuleIndex = -1;
 
@@ -267,7 +267,6 @@ void Database::evaluateSingleRule(Rule ruleToBeEvaluated, int currRuleIndex) {
 
 Relation Database::evaluatePredicate(Predicate predicate) {
 	Relation tempRelation;
-	bool lastQuery = false;
 
 		//Give the tempRelation a name
 		string tempRelationName = predicate.getId();
@@ -334,7 +333,7 @@ void Database::union_function(Relation currRelation, int currRuleIndex) {
 	mySet = currRelation.getTuples();
 	set<Tuple> tulpesFromDB = relationFromMap.getTuples();
 
-	vector<Parameter> params = currRelation.getHeader().getParameterList();
+	vector<Parameter> params = relationFromMap.getHeader().getParameterList();
 	vector<string> parametersThatAreIDs;
 
 	for (size_t j = 0; j < params.size(); j++) {
@@ -354,7 +353,9 @@ void Database::union_function(Relation currRelation, int currRuleIndex) {
 
 				currRelation.printTuplesForTempTupleLab4(parametersThatAreIDs,
 					myTuple, j, numTuplesOutputted);
-				cout << endl;
+				if (myTuple.getTupleListSize() == 1) {
+					cout << endl;
+				}			
 			}			
 		}
 	}
