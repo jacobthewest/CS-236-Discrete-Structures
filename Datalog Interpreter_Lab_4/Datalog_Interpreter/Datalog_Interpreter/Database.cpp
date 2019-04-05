@@ -342,13 +342,12 @@ void Database::union_function(Relation currRelation, int currRuleIndex) {
 	cout << rules_m.at(currRuleIndex).toString() << endl;
 
 	for (Tuple myTuple : mySet) {
-		if (relationFromMap.count(myTuple) == 0) {
+		if (relationFromMap.getTuples().count(myTuple) == 0) {
 			//The tuple does not exits
 			relationFromMap.addTuple(myTuple);
 			//Print out the tuple
 			size_t numTuplesOutputted = 0;
 			for (size_t j = 0; j < myTuple.getTupleListSize(); j++) {
-
 				currRelation.printTuplesForTempTupleLab4(parametersThatAreIDs,
 					myTuple, j, numTuplesOutputted);
 				if (myTuple.getTupleListSize() == 1) {
@@ -357,9 +356,7 @@ void Database::union_function(Relation currRelation, int currRuleIndex) {
 			}			
 		}
 	}
-	//adrowtorelation
 	
-	// relationFromMap.setTuples(currRelation.getTuples());
 	relationMap_m.find(nameOfRelation)->second = relationFromMap;
 	//We are now done
 }

@@ -1,3 +1,5 @@
 ﻿  Database.cpp
-c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.cpp(345): error C2039: 'count': is not a member of 'Relation'
-  c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(13): note: see declaration of 'Relation'
+  main.cpp
+  Relation.cpp
+  Generating Code...
+  Datalog_Interpreter.vcxproj -> C:\Users\jacob\source\repos\CS 236-Discrete Structures\Datalog Interpreter_Lab_4\Datalog_Interpreter\Debug\Datalog_Interpreter.exe
