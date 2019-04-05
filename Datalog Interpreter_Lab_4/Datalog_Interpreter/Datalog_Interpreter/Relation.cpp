@@ -291,6 +291,14 @@ Relation Relation::join_function(vector<Relation> relationsFromPredicates) {
 			}
 		}
 
+		/*Currently tempRel's tuples are up to date, but not its name and header. 
+		  luckily, we only need to set its header*/
+		vector<Relation> tempRelations;
+		tempRelations.push_back(r1);
+		tempRelations.push_back(r2);
+		Scheme tempScheme = combineSchemes(tempRelations);
+		tempRel.setHeader(tempScheme);
+
 		//We have now worked through the relations. Time to fix the Relations in our vector
 		relationsFromPredicates.at(1) = tempRel;
 
@@ -547,4 +555,90 @@ Relation Relation::projectNewRelation(Relation newEmptyRelation, vector<size_t> 
 	cleanedRelation.setHeader(tempScheme);
 
 	return cleanedRelation;
+}
+
+void Relation::printTuplesLab4(vector<string> parametersThatAreIDs, size_t numTuples, bool lastLastRule) {
+
+	set<Tuple>::iterator tupleIterator = tuples_m.begin();
+
+	for (size_t i = 0; i < tuples_m.size(); i++) {
+
+		Tuple tempTuple = *tupleIterator;
+		size_t numTuplesOutputted = 0;
+
+		for (size_t j = 0; j < tempTuple.getTupleListSize(); j++) {
+			printTuplesForTempTupleLab4(parametersThatAreIDs, tempTuple, j, lastLastRule, numTuplesOutputted);
+		}
+		tupleIterator++;
+	}
+}
+
+void Relation::printTuplesForTempTupleLab4(vector<string>& parametersThatAreIDs, Tuple& tempTuple,
+	size_t& j, bool& lastLastRule, size_t& numTuplesOutputted) {
+
+	size_t tempColumn = j % parametersThatAreIDs.size();
+	/*
+		this little algorithm above will always keep the column within the correct bounds.
+		example: table (aka relation) with 3 parameters
+			"tempcolumn" will always be set in this pattern: 0, 1, 2; this is good because it matches with our "3 column" vector
+		example: table (aka reltion) with 2 parameters
+			"tempcolumn" will always be set in this pattern: 0, 1; this is good because it matches with our "3 column" vector
+		to see how it works better, run with barker's in62.txt test case and set a breakpoint on "column"
+	*/
+
+	if (parametersThatAreIDs.size() < 2) {
+		/*
+			if parametersthatareids.size() < 2
+			this has to do with the query. the query may have parameters in it.
+			example query with zero parameters:  sk('b','c')? parametersthatareids.size() would be zero
+			example query with one parameter:  sk(a,'c')? parametersthatareids.size() would be one
+			example query with two parameters:  sk(a,b)? parametersthatareids.size() would be two
+		*/
+
+		// We have a single id to print with its matching tuple value
+		printSingleTupleWithSpaceLab4(lastLastRule, tempTuple, tempColumn, j, parametersThatAreIDs);
+	}
+	else {
+
+		/* lastColumnAsIndex is set to parametersthatareids.size() - 1 because we need to work with vectors which
+		  are zero based*/
+		size_t lastColumnAsIndex = parametersThatAreIDs.size() - 1;
+
+		if (numTuplesOutputted == lastColumnAsIndex) {
+			//if we are at the last item in our row and at the final column
+			printSingleTupleWithNoSpaceLab4(lastLastRule, tempTuple, tempColumn, j, parametersThatAreIDs, numTuplesOutputted);
+		}
+		else if (numTuplesOutputted == 0) {
+			//if we are at the first item in the row in the first column
+			cout << "  " << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j) << ", ";
+			numTuplesOutputted++;
+		}
+		else {
+			/* we are not at the first item in the row in the first column, we are somewhere in the
+			   middle of the first and last columns*/
+			cout << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j) << ", ";
+			numTuplesOutputted++;
+		}
+	}
+}
+
+void Relation::printSingleTupleWithSpaceLab4(bool lastLastRule, Tuple tempTuple, size_t tempColumn, size_t j,
+	vector<string> parametersThatAreIDs) {
+	if ((j == tempTuple.getTupleListSize() - 1)) {
+		cout << "  " << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j);
+	}
+	else {
+		cout << "  " << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j) << endl;
+	}
+}
+
+void Relation::printSingleTupleWithNoSpaceLab4(bool lastLastRule, Tuple tempTuple, size_t tempColumn, size_t j,
+	vector<string> parametersThatAreIDs, size_t& numTuplesOutputted) {
+	/*if ((j == tempTuple.getTupleListSize() - 1)) {
+		cout << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j);
+	}
+	else {*/
+	cout << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j) << endl;
+	/*}*/
+	numTuplesOutputted = 0; // Set numOutputted to zero so we can start printing for a new row	
 }

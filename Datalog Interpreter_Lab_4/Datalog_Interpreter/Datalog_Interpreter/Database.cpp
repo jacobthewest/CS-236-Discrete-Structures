@@ -210,7 +210,7 @@ void Database::evaluateRules() {
 		if (tuplesAfter == tuplesBefore) { thereWasAChange = false; }
 	}
 
-	//printLab4(lastLastRule);
+	printLab4(lastLastRule);
 }
 
 size_t Database::findTotalTuples() {
@@ -341,40 +341,6 @@ void Database::union_function(Relation currRelation) {
 	relationFromMap = currRelation;
 	relationMap_m.find(nameOfRelation)->second = relationFromMap;
 	//We are now done
-}
-
-void Database::printLab4(bool lastLastRule) {
-	cout << "Rule Evaluation\n";
-
-	for (size_t i = 0; i < rules_m.size(); i++) {
-		cout << rules_m.at(i).toString();
-		cout << "\n";
-
-		Predicate relPredicate = rules_m.at(i).getPredicate();
-		string relName = relPredicate.getId();
-		Relation tempRel = relationMap_m.find(relName)->second;
-		set<Tuple> tempTuples;
-		size_t numTuples = tempTuples.size();
-		tempTuples = tempRel.getTuples();
-		vector<Parameter> params = tempRel.getHeader().getParameterList();
-		vector<string> parametersThatAreIDsPrintLab4;
-
-		for (size_t j = 0; j < params.size(); j++) {
-			parametersThatAreIDsPrintLab4.push_back(params.at(j).getValue());
-		}
-
-		tempRel.printTuplesLab4(parametersThatAreIDsPrintLab4, numTuples, lastLastRule);
-	}
-
-	if (numTimesCycledThroughRules_m > 1) {
-		for (size_t i = 0; i < rules_m.size(); i++) {
-			cout << rules_m.at(i).toString() << endl;
-		}
-	}
-
-	cout << endl << "Schemes populated after " << numTimesCycledThroughRules_m << " passes through the Rules.\n\n";
-	cout << "Query Evaluation" << endl;
-
 }
 
 void Database::printLab4(bool lastLastRule) {
