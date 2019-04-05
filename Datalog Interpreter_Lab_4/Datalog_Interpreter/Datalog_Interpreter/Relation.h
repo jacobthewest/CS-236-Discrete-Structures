@@ -49,6 +49,7 @@ public:
 	size_t getNumTuplesInRelationForOutput(vector<string> parametersThatAreIDs);
 	Relation projectLab4(vector<size_t> parameterPositions);
 	Relation renameLab4(vector<string> parametersThatAreIDs);
+	void setTuples(set<Tuple> tuples) { this->tuples_m = tuples; }
 
 	//Project 4 Functions
 	Relation join_function(vector<Relation> relationsFromPredicates);

@@ -269,7 +269,13 @@ Relation Relation::join_function(vector<Relation> relationsFromPredicates) {
 	newSchemeForRelation = combineSchemes(relationsFromPredicates);
 
 	while (true) {
-		Relation r1 = relationsFromPredicates.at(0);
+
+		if (relationsFromPredicates.size() == 1) {
+			relationsFromPredicates.at(0).setHeader(newSchemeForRelation);
+			return relationsFromPredicates.at(0);
+		}
+		else {
+			Relation r1 = relationsFromPredicates.at(0);
 		Relation r2 = relationsFromPredicates.at(1);
 		Relation tempRel;
 
@@ -309,6 +315,7 @@ Relation Relation::join_function(vector<Relation> relationsFromPredicates) {
 			relationsFromPredicates.at(0).setHeader(newSchemeForRelation);
 			return relationsFromPredicates.at(0); 
 		}
+		}		
 	}
 }
 

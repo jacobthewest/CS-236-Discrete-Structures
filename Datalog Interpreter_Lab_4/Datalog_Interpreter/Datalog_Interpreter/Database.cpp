@@ -187,6 +187,8 @@ void Database::evaluateRules() {
 	bool thereWasAChange = true;
 	bool lastLastRule;
 
+	cout << "Rule Evaluation\n";
+
 	while (thereWasAChange) {
 		numTimesCycledThroughRules_m++;
 
@@ -333,18 +335,18 @@ void Database::union_function(Relation currRelation) {
 		if (mySet.count(myTuple) == 0) {
 			//The tuple does not exits
 			currRelation.addTuple(myTuple);
-
 			//Print out the tuple
+			
 		}
 	}
 	//adrowtorelation
-	relationFromMap = currRelation;
+	
+	relationFromMap.setTuples(currRelation.getTuples());
 	relationMap_m.find(nameOfRelation)->second = relationFromMap;
 	//We are now done
 }
 
 void Database::printLab4(bool lastLastRule) {
-	cout << "Rule Evaluation\n";
 
 	for (size_t i = 0; i < rules_m.size(); i++) {
 		cout << rules_m.at(i).toString();
