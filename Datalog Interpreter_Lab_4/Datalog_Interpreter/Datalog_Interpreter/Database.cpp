@@ -186,6 +186,7 @@ void Database::checkForDuplicateParameters(vector<string>& parametersThatAreIDs_
 void Database::evaluateRules() {
 	bool thereWasAChange = true;
 	bool lastLastRule;
+	int currRuleIndex = -1;
 
 	cout << "Rule Evaluation\n";
 
@@ -200,19 +201,20 @@ void Database::evaluateRules() {
 
 		bool lastRule = false;
 		for (size_t i = 0; i < rules_m.size(); i++) {
-			//predicateRelationsFromCurrentRule_m.clear(); //Make it so other rule evaluations don't interfere here.
-
+			currRuleIndex++;
 			if (i == rules_m.size() - 1) { lastRule = true; }
 
-			evaluateSingleRule(rules_m.at(i));
+			evaluateSingleRule(rules_m.at(i), currRuleIndex);
 			lastLastRule = lastRule;
 		}
+		currRuleIndex = -1;
 
 		tuplesAfter = findTotalTuples();
 		if (tuplesAfter == tuplesBefore) { thereWasAChange = false; }
 	}
 
-	printLab4(lastLastRule);
+	cout << endl << "Schemes populated after " << numTimesCycledThroughRules_m << " passes through the Rules.\n\n";
+	cout << "Query Evaluation" << endl;
 }
 
 size_t Database::findTotalTuples() {
@@ -230,7 +232,7 @@ size_t Database::findTotalTuples() {
 	return totalTuples;
 }
 
-void Database::evaluateSingleRule(Rule ruleToBeEvaluated) {
+void Database::evaluateSingleRule(Rule ruleToBeEvaluated, int currRuleIndex) {
 	size_t numPredicates = ruleToBeEvaluated.getPredicateList().size();
 
 	vector<Relation> relationsFromPredicates;
@@ -260,7 +262,7 @@ void Database::evaluateSingleRule(Rule ruleToBeEvaluated) {
 		schemeOfHeadPredicateFromID, ruleToBeEvaluated.getPredicate().getId());
 
 	//Union
-	union_function(newRelation);
+	union_function(newRelation, currRuleIndex);
 }
 
 Relation Database::evaluatePredicate(Predicate predicate) {
@@ -325,18 +327,35 @@ vector<Parameter> Database::getRuleHeadPredAsVectorOfParams(Rule ruleToBeEvaluat
 	return returnMe;
 }
 
-void Database::union_function(Relation currRelation) {
+void Database::union_function(Relation currRelation, int currRuleIndex) {
 	string nameOfRelation = currRelation.getRelationName();
 	set<Tuple> mySet;
 	Relation relationFromMap = relationMap_m.find(nameOfRelation)->second;
-	mySet = relationFromMap.getTuples();
+	mySet = currRelation.getTuples();
+	set<Tuple> tulpesFromDB = relationFromMap.getTuples();
+
+	vector<Parameter> params = currRelation.getHeader().getParameterList();
+	vector<string> parametersThatAreIDs;
+
+	for (size_t j = 0; j < params.size(); j++) {
+		parametersThatAreIDs.push_back(params.at(j).getValue());
+	}
+
+	//Print the rule
+	cout << rules_m.at(currRuleIndex).toString() << endl;
 
 	for (Tuple myTuple : mySet) {
-		if (mySet.count(myTuple) == 0) {
+		if (tulpesFromDB.count(myTuple) == 0) {
 			//The tuple does not exits
 			currRelation.addTuple(myTuple);
 			//Print out the tuple
-			
+			size_t numTuplesOutputted = 0;
+			for (size_t j = 0; j < myTuple.getTupleListSize(); j++) {
+
+				currRelation.printTuplesForTempTupleLab4(parametersThatAreIDs,
+					myTuple, j, numTuplesOutputted);
+				cout << endl;
+			}			
 		}
 	}
 	//adrowtorelation
@@ -346,7 +365,7 @@ void Database::union_function(Relation currRelation) {
 	//We are now done
 }
 
-void Database::printLab4(bool lastLastRule) {
+void Database::printLab4() {
 
 	for (size_t i = 0; i < rules_m.size(); i++) {
 		cout << rules_m.at(i).toString();
@@ -365,7 +384,7 @@ void Database::printLab4(bool lastLastRule) {
 			parametersThatAreIDsPrintLab4.push_back(params.at(j).getValue());
 		}
 
-		tempRel.printTuplesLab4(parametersThatAreIDsPrintLab4, numTuples, lastLastRule);
+		tempRel.printTuplesLab4(parametersThatAreIDsPrintLab4, numTuples);
 	}
 
 	if (numTimesCycledThroughRules_m > 1) {

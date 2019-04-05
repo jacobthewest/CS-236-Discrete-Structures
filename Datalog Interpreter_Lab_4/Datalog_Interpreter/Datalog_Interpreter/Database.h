@@ -42,12 +42,12 @@ public:
 
 	//Lab 4 Functions
 	void evaluateRules();
-	void evaluateSingleRule(Rule ruleToBeEvaluated);
+	void evaluateSingleRule(Rule ruleToBeEvaluated, int currRuleIndex);
 	Relation evaluatePredicate(Predicate predicate);
 	vector<Parameter> getRuleHeadPredAsVectorOfParams(Rule ruleToBeEvaluated);
 	size_t findTotalTuples();
-	void union_function(Relation newRelation);
-	void printLab4(bool lastLastRule);
+	void union_function(Relation newRelation, int currRuleIndex);
+	void printLab4();
 
 };
 

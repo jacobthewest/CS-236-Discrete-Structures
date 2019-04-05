@@ -564,7 +564,7 @@ Relation Relation::projectNewRelation(Relation newEmptyRelation, vector<size_t> 
 	return cleanedRelation;
 }
 
-void Relation::printTuplesLab4(vector<string> parametersThatAreIDs, size_t numTuples, bool lastLastRule) {
+void Relation::printTuplesLab4(vector<string> parametersThatAreIDs, size_t numTuples) {
 
 	set<Tuple>::iterator tupleIterator = tuples_m.begin();
 
@@ -574,14 +574,14 @@ void Relation::printTuplesLab4(vector<string> parametersThatAreIDs, size_t numTu
 		size_t numTuplesOutputted = 0;
 
 		for (size_t j = 0; j < tempTuple.getTupleListSize(); j++) {
-			printTuplesForTempTupleLab4(parametersThatAreIDs, tempTuple, j, lastLastRule, numTuplesOutputted);
+			printTuplesForTempTupleLab4(parametersThatAreIDs, tempTuple, j, numTuplesOutputted);
 		}
 		tupleIterator++;
 	}
 }
 
 void Relation::printTuplesForTempTupleLab4(vector<string>& parametersThatAreIDs, Tuple& tempTuple,
-	size_t& j, bool& lastLastRule, size_t& numTuplesOutputted) {
+	size_t& j, size_t& numTuplesOutputted) {
 
 	size_t tempColumn = j % parametersThatAreIDs.size();
 	/*
@@ -603,7 +603,7 @@ void Relation::printTuplesForTempTupleLab4(vector<string>& parametersThatAreIDs,
 		*/
 
 		// We have a single id to print with its matching tuple value
-		printSingleTupleWithSpaceLab4(lastLastRule, tempTuple, tempColumn, j, parametersThatAreIDs);
+		printSingleTupleWithSpaceLab4(tempTuple, tempColumn, j, parametersThatAreIDs);
 	}
 	else {
 
@@ -613,7 +613,7 @@ void Relation::printTuplesForTempTupleLab4(vector<string>& parametersThatAreIDs,
 
 		if (numTuplesOutputted == lastColumnAsIndex) {
 			//if we are at the last item in our row and at the final column
-			printSingleTupleWithNoSpaceLab4(lastLastRule, tempTuple, tempColumn, j, parametersThatAreIDs, numTuplesOutputted);
+			printSingleTupleWithNoSpaceLab4(tempTuple, tempColumn, j, parametersThatAreIDs, numTuplesOutputted);
 		}
 		else if (numTuplesOutputted == 0) {
 			//if we are at the first item in the row in the first column
@@ -629,7 +629,7 @@ void Relation::printTuplesForTempTupleLab4(vector<string>& parametersThatAreIDs,
 	}
 }
 
-void Relation::printSingleTupleWithSpaceLab4(bool lastLastRule, Tuple tempTuple, size_t tempColumn, size_t j,
+void Relation::printSingleTupleWithSpaceLab4(Tuple tempTuple, size_t tempColumn, size_t j,
 	vector<string> parametersThatAreIDs) {
 	if ((j == tempTuple.getTupleListSize() - 1)) {
 		cout << "  " << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j);
@@ -639,7 +639,7 @@ void Relation::printSingleTupleWithSpaceLab4(bool lastLastRule, Tuple tempTuple,
 	}
 }
 
-void Relation::printSingleTupleWithNoSpaceLab4(bool lastLastRule, Tuple tempTuple, size_t tempColumn, size_t j,
+void Relation::printSingleTupleWithNoSpaceLab4(Tuple tempTuple, size_t tempColumn, size_t j,
 	vector<string> parametersThatAreIDs, size_t& numTuplesOutputted) {
 	/*if ((j == tempTuple.getTupleListSize() - 1)) {
 		cout << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j);

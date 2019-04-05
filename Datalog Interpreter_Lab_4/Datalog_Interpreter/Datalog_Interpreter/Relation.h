@@ -59,12 +59,12 @@ public:
 	set<Tuple> getTuples() { return tuples_m; }
 	Relation projectNewRelation(Relation newRelation, vector<size_t> parameterPositionsWeCareAboutFromNewScheme, 
 		vector<Parameter> columnsWeNeeds, string stringOfNewScheme);
-	void printTuplesLab4(vector<string> parametersThaAreIDs, size_t numTuples, bool lastLastRule);
+	void printTuplesLab4(vector<string> parametersThaAreIDs, size_t numTuples);
 	void printTuplesForTempTupleLab4(vector<string>& parametersThaAreIDs, Tuple& tempTuple, size_t& j,
-		bool& lastLastRule, size_t& numTuplesOutputted);
-	void printSingleTupleWithSpaceLab4(bool lastLastRule, Tuple tempTuple, size_t tempColumn, size_t j,
+		size_t& numTuplesOutputted);
+	void printSingleTupleWithSpaceLab4(Tuple tempTuple, size_t tempColumn, size_t j,
 		vector<string> parametersThaAreIDs);
-	void printSingleTupleWithNoSpaceLab4(bool lastLastRule, Tuple tempTuple, size_t tempColumn, size_t j,
+	void printSingleTupleWithNoSpaceLab4(Tuple tempTuple, size_t tempColumn, size_t j,
 		vector<string> parametersThaAreIDs, size_t& numTuplesOutputted);
 };
 
