@@ -319,24 +319,6 @@ Relation Relation::join_function(vector<Relation> relationsFromPredicates) {
 	}
 }
 
-//void Relation::union_unction() {
-	/*make the scheme s for the result relation
-	(combine r1's scheme with r2's scheme)
-
-		make a new empty relation r using scheme s
-
-		for each tuple t1 in r1
-			for each tuple t2 in r2
-
-				if t1 and t2 can join
-					join t1 and t2 to make tuple t
-					add tuple t to relation r
-					end if
-
-					end for
-					end for*/
-//}
-
 Relation Relation::projectLab4(vector<size_t> parameterPositions) {
 	/*Create a reltion and give it the name and header of the current relation we are working in*/
 	Relation relationToReturn;
@@ -641,11 +623,6 @@ void Relation::printSingleTupleWithSpaceLab4(Tuple tempTuple, size_t tempColumn,
 
 void Relation::printSingleTupleWithNoSpaceLab4(Tuple tempTuple, size_t tempColumn, size_t j,
 	vector<string> parametersThatAreIDs, size_t& numTuplesOutputted) {
-	/*if ((j == tempTuple.getTupleListSize() - 1)) {
-		cout << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j);
-	}
-	else {*/
 	cout << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j) << endl;
-	/*}*/
 	numTuplesOutputted = 0; // Set numOutputted to zero so we can start printing for a new row	
 }

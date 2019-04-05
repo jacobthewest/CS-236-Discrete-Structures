@@ -163,8 +163,11 @@ void Database::printTheStuffBeforePrintingTuples(Relation tempRelation, vector<s
 	cout << oss.str() << ")? ";
 	if (tempRelation.getNumTuples() > 0) {
 		cout << "Yes(" << numTuples;
-		cout << ")" << endl;
-		//Jacob, if lab 4 output for query evaluation gives you a problem, then it is probably
+		cout << ")";
+		if (!lastQuery) {
+		   cout << endl; 
+		}
+		//Jacob, f lab 4 output for query evaluation gives you a problem, then it is probably
 		//this endl that is above.
 	}
 	else {
@@ -200,11 +203,8 @@ void Database::evaluateRules() {
 		tuplesBefore = findTotalTuples();
 		tuplesAfter = tuplesBefore;
 
-		bool lastRule = false;
 		for (size_t i = 0; i < rules_m.size(); i++) {
 			currRuleIndex++;
-			if (i == rules_m.size() - 1) { lastRule = true; }
-
 			evaluateSingleRule(rules_m.at(i), currRuleIndex);
 		}
 		currRuleIndex = -1;
