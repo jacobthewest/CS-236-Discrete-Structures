@@ -1,0 +1,46 @@
+﻿  Database.cpp
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(60): error C2059: syntax error: '<<'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(62): error C2238: unexpected token(s) preceding ';'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(64): error C2059: syntax error: '=='
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(66): error C2238: unexpected token(s) preceding ';'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(68): error C2059: syntax error: '>>'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(70): error C2238: unexpected token(s) preceding ';'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(38): error C2059: syntax error: '<<'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(40): error C2238: unexpected token(s) preceding ';'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(42): error C2059: syntax error: '=='
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(44): error C2143: syntax error: missing ')' before ';'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(46): error C2059: syntax error: '>>'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(47): error C2535: 'void Database::checkForDuplicateParameters(std::vector<std::string,std::allocator<_Kty>> &,bool &)': member function already defined or declared
+          with
+          [
+              _Kty=std::string
+          ]
+  c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(41): note: see declaration of 'Database::checkForDuplicateParameters'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.cpp(112): error C2660: 'Database::checkForDuplicateParameters': function does not take 4 arguments
+  c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(41): note: see declaration of 'Database::checkForDuplicateParameters'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.cpp(134): error C3861: 'printTheStuffBeforePrintingTuples': identifier not found
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.cpp(147): error C2059: syntax error: '<<'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.cpp(148): error C2039: 'printTheStuffBeforePrintingTuples': is not a member of 'Database'
+  c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(13): note: see declaration of 'Database'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.cpp(149): error C2143: syntax error: missing ';' before '{'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.cpp(149): error C2447: '{': missing function header (old-style formal list?)
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.cpp(398): fatal error C1004: unexpected end-of-file found
+  main.cpp
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(60): error C2059: syntax error: '<<'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(62): error C2238: unexpected token(s) preceding ';'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(64): error C2059: syntax error: '=='
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(66): error C2238: unexpected token(s) preceding ';'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(68): error C2059: syntax error: '>>'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\relation.h(70): error C2238: unexpected token(s) preceding ';'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(38): error C2059: syntax error: '<<'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(40): error C2238: unexpected token(s) preceding ';'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(42): error C2059: syntax error: '=='
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(44): error C2143: syntax error: missing ')' before ';'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(46): error C2059: syntax error: '>>'
+c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(47): error C2535: 'void Database::checkForDuplicateParameters(std::vector<std::string,std::allocator<_Kty>> &,bool &)': member function already defined or declared
+          with
+          [
+              _Kty=std::string
+          ]
+  c:\users\jacob\source\repos\cs 236-discrete structures\datalog interpreter_lab_4\datalog_interpreter\datalog_interpreter\database.h(41): note: see declaration of 'Database::checkForDuplicateParameters'
+  Generating Code...

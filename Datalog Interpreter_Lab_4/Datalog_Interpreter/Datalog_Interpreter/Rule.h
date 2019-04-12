@@ -21,8 +21,9 @@ public:
 
 	string toString();
 	vector<Predicate> getPredicateList() { return this->predicateList_m; }
-	Predicate getPredicate() { return this->predicate_m; }
+	Predicate getPredicate() { return this->predicate_m; }	
 	void addPredicate(Predicate predicate);
+	vector<size_t> getPositionOfParamsWeCareAbout(vector<Parameter> combinedScheme, vector<Parameter> schemeOfProject);
 };
 
 #endif //RULE_H
