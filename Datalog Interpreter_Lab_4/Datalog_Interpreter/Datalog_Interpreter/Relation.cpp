@@ -41,7 +41,7 @@ Relation Relation::select(size_t positionInParametersVector, string parameterVal
 
 	for (size_t i = 0; i < tuples_m.size(); i++) {
 		Tuple tempTuple = *tupleIterator;
-		
+
 		//Get the value of our tuple at the specific position we are searching for
 		string tempTupleValueAtPositionInParametersVector;
 		tempTupleValueAtPositionInParametersVector = tempTuple.getElementFromTupleList(positionInParametersVector);
@@ -66,7 +66,7 @@ Relation Relation::select(size_t positionInColumnOne, size_t positionInColumnTwo
 
 	/*Iterate through the set of tuples that this current relation has*/
 	set<Tuple>::iterator tupleIterator = tuples_m.begin();
-	
+
 	for (size_t i = 0; i < tuples_m.size(); i++) {
 		Tuple tempTuple = *tupleIterator;
 
@@ -103,20 +103,20 @@ Relation Relation::project(vector<size_t> parameterPositions) {
 
 	//Iterate through every tuple that we have for the relation that we are currently working in
 	for (size_t i = 0; i < tuples_m.size(); i++) {
-		
+
 		//Create a tempTuple
 		Tuple tempTuple = *tuples_mIterator;
-		
+
 		//Iterate through all of the tuple values that the tempTuple has and add them to the tupleToProject
 		for (size_t j = 0; j < parameterPositions.size(); j++) {
 			size_t getValueFromTupleListAtThisParameterPosition = parameterPositions.at(j);
 			string tupleValueToAdd = tempTuple.getElementFromTupleList(getValueFromTupleListAtThisParameterPosition);
 			tupleToProject.addToTupleList(tupleValueToAdd);
 		}
-		
+
 		tuples_mIterator++;
 	}
-	
+
 	//Add tupleToProject (the tuple we have been straightup loading with tuple values) to the relation
 	relationToReturn.addTuple(tupleToProject);
 
@@ -131,7 +131,7 @@ Relation Relation::project(vector<size_t> parameterPositions) {
 }
 
 Relation Relation::rename(vector<string> parametersThatAreIDs) {
-	/*The rename operation changes the scheme of the relation. The resulting relation has the 
+	/*The rename operation changes the scheme of the relation. The resulting relation has the
 	same tuples (and name) as the original*/
 	Relation relationToReturn;
 	relationToReturn.name_m = this->name_m;
@@ -147,7 +147,7 @@ Relation Relation::rename(vector<string> parametersThatAreIDs) {
 }
 
 size_t Relation::getNumTuplesInRelationForOutput(vector<string> parametersThatAreIDs) {
-	
+
 	size_t numTuples = 0;
 
 	//Count the number of tuples
@@ -166,7 +166,7 @@ size_t Relation::getNumTuplesInRelationForOutput(vector<string> parametersThatAr
 	if (numTuples != 0) {
 		return (numTuples / parametersThatAreIDs.size());
 	}
-	
+
 	/* We have no IDs associated with what we need to print, so that means that we have a query that is searching for a specific
 	value pair. Because of the integer division, we can lose values so we will return 1. i.e. (tuples_m.size() / zero ID's) will
 	give us a zero, but we were put into this function because we said that tuples_m.size() > 0, so we know that there is something
@@ -178,7 +178,7 @@ size_t Relation::getNumTuplesInRelationForOutput(vector<string> parametersThatAr
 void Relation::printTuples(vector<string> parametersThatAreIDs, size_t numTuples, bool lastQuery) {
 
 	set<Tuple>::iterator tupleIterator = tuples_m.begin();
-	
+
 
 	for (size_t i = 0; i < tuples_m.size(); i++) {
 
@@ -188,7 +188,10 @@ void Relation::printTuples(vector<string> parametersThatAreIDs, size_t numTuples
 		if ((tempTuple.getTupleListSize() > 0)) {
 			cout << endl;
 		}
-		
+		else if (!lastQuery) {
+			cout << endl;
+		}
+
 		for (size_t j = 0; j < tempTuple.getTupleListSize(); j++) {
 			printTuplesForTempTuple(parametersThatAreIDs, tempTuple, j, lastQuery, numTuplesOutputted);
 		}
@@ -245,7 +248,7 @@ void Relation::printTuplesForTempTuple(vector<string>& parametersThatAreIDs, Tup
 	}
 }
 
-void Relation::printSingleTupleWithSpace(bool lastQuery, Tuple tempTuple, size_t tempColumn, 
+void Relation::printSingleTupleWithSpace(bool lastQuery, Tuple tempTuple, size_t tempColumn,
 	size_t j, vector<string> parametersThatAreIDs) {
 	if (lastQuery && (j == tempTuple.getTupleListSize() - 1)) {
 		cout << "  " << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j);
@@ -255,7 +258,7 @@ void Relation::printSingleTupleWithSpace(bool lastQuery, Tuple tempTuple, size_t
 	}
 }
 
-void Relation::printSingleTupleWithNoSpace(bool lastQuery, Tuple tempTuple, size_t tempColumn, 
+void Relation::printSingleTupleWithNoSpace(bool lastQuery, Tuple tempTuple, size_t tempColumn,
 	size_t j, vector<string> parametersThatAreIDs, size_t& numTuplesOutputted) {
 	if (lastQuery && (j == tempTuple.getTupleListSize() - 1)) {
 		cout << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j);
@@ -280,46 +283,46 @@ Relation Relation::join_function(vector<Relation> relationsFromPredicates) {
 		}
 		else {
 			Relation r1 = relationsFromPredicates.at(0);
-		Relation r2 = relationsFromPredicates.at(1);
-		Relation tempRel;
+			Relation r2 = relationsFromPredicates.at(1);
+			Relation tempRel;
 
-		set<Tuple> set1 = r1.getTuples();
-		set<Tuple> set2 = r2.getTuples();
+			set<Tuple> set1 = r1.getTuples();
+			set<Tuple> set2 = r2.getTuples();
 
-		Scheme s1 = r1.getHeader();
-		Scheme s2 = r2.getHeader();
+			Scheme s1 = r1.getHeader();
+			Scheme s2 = r2.getHeader();
 
-		for (Tuple t1 : set1) {
-			for (Tuple t2 : set2) {
-				//isJoinable
-				if (isJoinable(t1, t2, s1, s2)) {
-					//combineTuples
-					// join t1 and t2 to make tuple t. add tuple t to relation r
-					Tuple tempTuple = combineTuples(t1, t2, s1, s2, newSchemeForRelation);
-					tempRel.addTuple(tempTuple);
+			for (Tuple t1 : set1) {
+				for (Tuple t2 : set2) {
+					//isJoinable
+					if (isJoinable(t1, t2, s1, s2)) {
+						//combineTuples
+						// join t1 and t2 to make tuple t. add tuple t to relation r
+						Tuple tempTuple = combineTuples(t1, t2, s1, s2, newSchemeForRelation);
+						tempRel.addTuple(tempTuple);
+					}
 				}
 			}
+
+			/*Currently tempRel's tuples are up to date, but not its name and header.
+			  luckily, we only need to set its header*/
+			vector<Relation> tempRelations;
+			tempRelations.push_back(r1);
+			tempRelations.push_back(r2);
+			Scheme tempScheme = combineSchemes(tempRelations);
+			tempRel.setHeader(tempScheme);
+
+			//We have now worked through the relations. Time to fix the Relations in our vector
+			relationsFromPredicates.at(1) = tempRel;
+
+			//Pop the "old new" relation
+			relationsFromPredicates.erase(relationsFromPredicates.begin());
+
+			if (relationsFromPredicates.size() == 1) {
+				relationsFromPredicates.at(0).setHeader(newSchemeForRelation);
+				return relationsFromPredicates.at(0);
+			}
 		}
-
-		/*Currently tempRel's tuples are up to date, but not its name and header. 
-		  luckily, we only need to set its header*/
-		vector<Relation> tempRelations;
-		tempRelations.push_back(r1);
-		tempRelations.push_back(r2);
-		Scheme tempScheme = combineSchemes(tempRelations);
-		tempRel.setHeader(tempScheme);
-
-		//We have now worked through the relations. Time to fix the Relations in our vector
-		relationsFromPredicates.at(1) = tempRel;
-
-		//Pop the "old new" relation
-		relationsFromPredicates.erase(relationsFromPredicates.begin());
-
-		if (relationsFromPredicates.size() == 1) { 
-			relationsFromPredicates.at(0).setHeader(newSchemeForRelation);
-			return relationsFromPredicates.at(0); 
-		}
-		}		
 	}
 }
 
@@ -371,7 +374,7 @@ Relation Relation::renameLab4(vector<string> parametersThatAreIDs) {
 	same tuples (and name) as the original*/
 	Relation relationToReturn;
 	relationToReturn.name_m = this->name_m;
-	relationToReturn.tuples_m = this->tuples_m;	
+	relationToReturn.tuples_m = this->tuples_m;
 
 	/*This will set the parameterlist for relationToReturn. In our solution so far, we have only interacted with the Scheme
 	class in our Database class constructor when we added the parameters to the data member schemes_m through the addParameterList
@@ -398,7 +401,6 @@ Scheme Relation::combineSchemes(vector<Relation> relationsFromPredicates) {
 	else {
 		parameterListForNewRelation =
 			relationsFromPredicates.at(0).getHeader().getParameterList();
-		//^^^POOP could be this
 		for (size_t i = 0; i < numSchemesToCombine; i++) {
 
 			if (i != 0) {
@@ -512,7 +514,7 @@ bool Relation::isJoinable(Tuple t1, Tuple t2, Scheme s1, Scheme s2) {
 	return true;
 }
 
-Relation Relation::projectNewRelation(Relation newEmptyRelation, vector<size_t> parameterPositionsWeCareAboutFromNewScheme, 
+Relation Relation::projectNewRelation(Relation newEmptyRelation, vector<size_t> parameterPositionsWeCareAboutFromNewScheme,
 	vector<Parameter> columnsWeNeed, string columnsWeNeedAsString) {
 	vector<Parameter> columns = newEmptyRelation.getHeader().getParameterList();
 	Relation cleanedRelation;

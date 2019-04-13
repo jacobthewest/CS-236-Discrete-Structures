@@ -62,8 +62,8 @@ Database::Database(vector<Predicate> schemes, vector<Predicate> facts, vector<Ru
 
 void Database::addRelation(Relation relationObj) {
 	string relationName = relationObj.getRelationName();
-	relationMap_m.insert(pair<string,Relation>(relationName, relationObj)); /*This will insert our new relation
-																						   (aka table) into our databse. This also 
+	relationMap_m.insert(pair<string, Relation>(relationName, relationObj)); /*This will insert our new relation
+																						   (aka table) into our databse. This also
 																						   prevents duplicates from being added.*/
 }
 
@@ -84,10 +84,10 @@ void Database::evaluateQueries() {
 	for (size_t i = 0; i < queries_m.size(); i++) {
 
 		if (i == queries_m.size() - 1) { lastQuery = true; }
-		
+
 		//Give the tempRelation a name
-		string tempRelationName = queries_m.at(i).getId(); 
-		
+		string tempRelationName = queries_m.at(i).getId();
+
 		/*Get the parameters in the temp relation. If the query was "SK(A,'c')" then the parameters would be "A,'c'"*/
 		vector<Parameter> parametersFromTempRelation = queries_m.at(i).getVectorOfParameters();
 
@@ -120,32 +120,32 @@ void Database::evaluateQueries() {
 																	  "SK(A,'c')", "A" would be an ID that would be added here and
 																	  'c' would be added in the STRING elseif part of this if statement*/
 					parameterPositions_m.push_back(positionInParameterVector);
-				}			
+				}
 			}
 			else if (parameterType == "STRING") {
 				tempRelation = tempRelation.select(positionInParameterVector, parameterValue);
 			}
 		}
-		
+
 		tempRelation = tempRelation.project(parameterPositions_m);
-		
+
 		tempRelation = tempRelation.rename(parametersThatAreIDs_m);
-		
+
 		printTheStuffBeforePrintingTuples(tempRelation, this->parametersThatAreIDs_m, parametersFromTempRelation, lastQuery);
-		
+
 		size_t numTuples = tempRelation.getNumTuplesInRelationForOutput(this->parametersThatAreIDs_m);
 
 		//Print the tuples (values in the row) in the query involved
 		tempRelation.printTuples(parametersThatAreIDs_m, numTuples, lastQuery);
 
 		//Clear the vectors that we populated with the tempRelation
-		parametersThatAreIDs_m.clear();	
+		parametersThatAreIDs_m.clear();
 		parameterPositions_m.clear();
 	}
-}	
+}
 
 void Database::printTheStuffBeforePrintingTuples(Relation tempRelation, vector<string> paramatersThatAreIDs,
-		vector<Parameter> parametersFromTempRelation, bool lastQuery) {
+	vector<Parameter> parametersFromTempRelation, bool lastQuery) {
 	//Print the query. I. e. Make "SK(A,'c') print as SK(A,'c')? Yes(2)"
 	cout << tempRelation.getRelationName() << "(";
 
@@ -250,12 +250,12 @@ void Database::evaluateSingleRule(Rule ruleToBeEvaluated, int currRuleIndex) {
 	vector<size_t> parameterPositionsWeCareAboutFromNewScheme;
 	vector<Parameter> schemeOfHeadPredicateFromID;
 	schemeOfHeadPredicateFromID = getRuleHeadPredAsVectorOfParams(ruleToBeEvaluated);
-	
-	parameterPositionsWeCareAboutFromNewScheme = 
+
+	parameterPositionsWeCareAboutFromNewScheme =
 		ruleToBeEvaluated.getPositionOfParamsWeCareAbout(newRelation.getHeader().getParameterList(), schemeOfHeadPredicateFromID);
-	
+
 	//Rename and Project at the same time
-	newRelation = newRelation.projectNewRelation(newRelation, parameterPositionsWeCareAboutFromNewScheme, 
+	newRelation = newRelation.projectNewRelation(newRelation, parameterPositionsWeCareAboutFromNewScheme,
 		schemeOfHeadPredicateFromID, ruleToBeEvaluated.getPredicate().getId());
 
 	//Union
@@ -265,57 +265,57 @@ void Database::evaluateSingleRule(Rule ruleToBeEvaluated, int currRuleIndex) {
 Relation Database::evaluatePredicate(Predicate predicate) {
 	Relation tempRelation;
 
-		//Give the tempRelation a name
-		string tempRelationName = predicate.getId();
+	//Give the tempRelation a name
+	string tempRelationName = predicate.getId();
 
-		/*Get the parameters in the temp relation. If the query was "SK(A,'c')" then the parameters would be "A,'c'"*/
-		vector<Parameter> parametersFromTempRelation = predicate.getVectorOfParameters();
+	/*Get the parameters in the temp relation. If the query was "SK(A,'c')" then the parameters would be "A,'c'"*/
+	vector<Parameter> parametersFromTempRelation = predicate.getVectorOfParameters();
 
-		//Find the current relation that our query is asking for in our map of relations and set it to foundRelation
-		Relation foundRelation = relationMap_m.find(tempRelationName)->second;
-		tempRelation = foundRelation; //Set the relations to each other.
+	//Find the current relation that our query is asking for in our map of relations and set it to foundRelation
+	Relation foundRelation = relationMap_m.find(tempRelationName)->second;
+	tempRelation = foundRelation; //Set the relations to each other.
 
-		//Loop through the parameters in our tempRelation.
-		//If the query was "SK(A,'c')" then the parameters in our tempRelation would be "A,'c'"* /
-		for (size_t j = 0; j < parametersFromTempRelation.size(); j++) {
+	//Loop through the parameters in our tempRelation.
+	//If the query was "SK(A,'c')" then the parameters in our tempRelation would be "A,'c'"* /
+	for (size_t j = 0; j < parametersFromTempRelation.size(); j++) {
 
-			//Get the parameter type and the parameter value
-			string parameterType = parametersFromTempRelation.at(j).getType();
-			string parameterValue = parametersFromTempRelation.at(j).getValue();
-			size_t positionInParameterVector = j;
+		//Get the parameter type and the parameter value
+		string parameterType = parametersFromTempRelation.at(j).getType();
+		string parameterValue = parametersFromTempRelation.at(j).getValue();
+		size_t positionInParameterVector = j;
 
-			if (parameterType == "ID") {
+		if (parameterType == "ID") {
 
-				bool duplicateParameterExists = false;
-				size_t positionOfDuplicateParameter = 0;
+			bool duplicateParameterExists = false;
+			size_t positionOfDuplicateParameter = 0;
 
-				checkForDuplicateParameters(parametersThatAreIDs_m, duplicateParameterExists, positionOfDuplicateParameter, parameterValue);
+			checkForDuplicateParameters(parametersThatAreIDs_m, duplicateParameterExists, positionOfDuplicateParameter, parameterValue);
 
-				if (duplicateParameterExists) {
-					tempRelation = tempRelation.select(positionOfDuplicateParameter, positionInParameterVector);
-				}
-				else {
-					//Push ID into vector parametersThatAreIDs_m and push positioInParameterVector into vector parameterPositions_m
-					parametersThatAreIDs_m.push_back(parameterValue); /*parameterValue is an ID like "A". So in our example query of
-																	  "SK(A,'c')", "A" would be an ID that would be added here and
-																	  'c' would be added in the STRING elseif part of this if statement*/
-					parameterPositions_m.push_back(positionInParameterVector);
-				}
+			if (duplicateParameterExists) {
+				tempRelation = tempRelation.select(positionOfDuplicateParameter, positionInParameterVector);
 			}
-			else if (parameterType == "STRING") {
-				tempRelation = tempRelation.select(positionInParameterVector, parameterValue);
+			else {
+				//Push ID into vector parametersThatAreIDs_m and push positioInParameterVector into vector parameterPositions_m
+				parametersThatAreIDs_m.push_back(parameterValue); /*parameterValue is an ID like "A". So in our example query of
+																  "SK(A,'c')", "A" would be an ID that would be added here and
+																  'c' would be added in the STRING elseif part of this if statement*/
+				parameterPositions_m.push_back(positionInParameterVector);
 			}
 		}
+		else if (parameterType == "STRING") {
+			tempRelation = tempRelation.select(positionInParameterVector, parameterValue);
+		}
+	}
 
-		tempRelation = tempRelation.projectLab4(parameterPositions_m);
+	tempRelation = tempRelation.projectLab4(parameterPositions_m);
 
-		tempRelation = tempRelation.renameLab4(parametersThatAreIDs_m);
+	tempRelation = tempRelation.renameLab4(parametersThatAreIDs_m);
 
-		//Clear the vectors that we populated with the tempRelation
-		parametersThatAreIDs_m.clear();
-		parameterPositions_m.clear();
+	//Clear the vectors that we populated with the tempRelation
+	parametersThatAreIDs_m.clear();
+	parameterPositions_m.clear();
 
-		return tempRelation;
+	return tempRelation;
 }
 
 vector<Parameter> Database::getRuleHeadPredAsVectorOfParams(Rule ruleToBeEvaluated) {
@@ -349,11 +349,11 @@ void Database::union_function(Relation currRelation, int currRuleIndex) {
 					myTuple, j, numTuplesOutputted);
 				if (myTuple.getTupleListSize() == 1) {
 					cout << endl;
-				}			
-			}			
+				}
+			}
 		}
 	}
-	
+
 	relationMap_m.find(nameOfRelation)->second = relationFromMap;
 	//We are now done
 }

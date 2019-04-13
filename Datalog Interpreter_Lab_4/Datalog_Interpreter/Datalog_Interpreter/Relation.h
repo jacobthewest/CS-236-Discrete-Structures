@@ -37,7 +37,7 @@ public:
 	void printTuplesForTempTuple(vector<string>& parametersThaAreIDs, Tuple& tempTuple, size_t& j,
 		bool& lastQuery, size_t& numTuplesOutputted);
 	void printSingleTupleWithSpace(bool lastQuery, Tuple tempTuple, size_t tempColumn, size_t j, vector<string> parametersThaAreIDs);
-	void printSingleTupleWithNoSpace(bool lastQuery, Tuple tempTuple, size_t tempColumn, size_t j, 
+	void printSingleTupleWithNoSpace(bool lastQuery, Tuple tempTuple, size_t tempColumn, size_t j,
 		vector<string> parametersThaAreIDs, size_t& numTuplesOutputted);
 
 	//Getters and setters
@@ -57,7 +57,7 @@ public:
 	bool isJoinable(Tuple t1, Tuple t2, Scheme s1, Scheme s2);
 	Tuple combineTuples(Tuple t1, Tuple t2, Scheme s1, Scheme s2, Scheme newSchemeForRelation);
 	set<Tuple> getTuples() { return tuples_m; }
-	Relation projectNewRelation(Relation newRelation, vector<size_t> parameterPositionsWeCareAboutFromNewScheme, 
+	Relation projectNewRelation(Relation newRelation, vector<size_t> parameterPositionsWeCareAboutFromNewScheme,
 		vector<Parameter> columnsWeNeeds, string stringOfNewScheme);
 	void printTuplesLab4(vector<string> parametersThaAreIDs, size_t numTuples);
 	void printTuplesForTempTupleLab4(vector<string>& parametersThaAreIDs, Tuple& tempTuple, size_t& j,

@@ -35,9 +35,9 @@ public:
 	void addRelation(Relation relationObj);
 	void addRowToRelation(Tuple tupleObj);
 	void evaluateQueries();
-	void printTheStuffBeforePrintingTuples(Relation tempRelation, vector<string> paramatersThatAreIDs, 
+	void printTheStuffBeforePrintingTuples(Relation tempRelation, vector<string> paramatersThatAreIDs,
 		vector<Parameter> parametersFromTempRelation, bool lastQuery);
-	void checkForDuplicateParameters(vector<string>& parametersThatAreIDs_m, bool& duplicateParameterExists, 
+	void checkForDuplicateParameters(vector<string>& parametersThatAreIDs_m, bool& duplicateParameterExists,
 		size_t& positionOfDuplicateParameter, string& parameterValue);
 
 	//Lab 4 Functions

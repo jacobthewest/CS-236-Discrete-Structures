@@ -1,2 +1,17 @@
-﻿  Relation.cpp
+﻿  Database.cpp
+  DatalogProgram.cpp
+  Interpreter.cpp
+  Lexer.cpp
+  Parameter.cpp
+  Parser.cpp
+  Predicate.cpp
+  Relation.cpp
+  Rule.cpp
+  Scanner.cpp
+  Scheme.cpp
+  Token.cpp
+  Tuple.cpp
+  main.cpp
+  Generating Code...
+  LINK : C:\Users\jacob\source\repos\CS 236-Discrete Structures\Datalog Interpreter_Lab_4\Datalog_Interpreter\Debug\Datalog_Interpreter.exe not found or not built by the last incremental link; performing full link
   Datalog_Interpreter.vcxproj -> C:\Users\jacob\source\repos\CS 236-Discrete Structures\Datalog Interpreter_Lab_4\Datalog_Interpreter\Debug\Datalog_Interpreter.exe
