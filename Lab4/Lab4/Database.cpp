@@ -60,14 +60,14 @@ Database::Database(vector<Predicate> schemes, vector<Predicate> facts, vector<Ru
 	}
 }
 
-void Database::addRelation(Relation relationObj) {
+void Database::addRelation(Relation& relationObj) {
 	string relationName = relationObj.getRelationName();
 	relationMap_m.insert(pair<string, Relation>(relationName, relationObj)); /*This will insert our new relation
 																						   (aka table) into our databse. This also
 																						   prevents duplicates from being added.*/
 }
 
-void Database::addRowToRelation(Tuple tupleObj) {
+void Database::addRowToRelation(Tuple& tupleObj) {
 	//TupleObj is a tuple object that has a relation name and a vector<string> of tuple values (values for each position in the row)
 	string relationName = tupleObj.getRelationName(); //Get name of table/relation
 	Relation currentRelation = relationMap_m.find(relationName)->second; /*This sets relationIterator to the position of the current
@@ -144,8 +144,8 @@ void Database::evaluateQueries() {
 	}
 }
 
-void Database::printTheStuffBeforePrintingTuples(Relation tempRelation, vector<string> paramatersThatAreIDs,
-	vector<Parameter> parametersFromTempRelation, bool lastQuery) {
+void Database::printTheStuffBeforePrintingTuples(Relation& tempRelation, vector<string>& paramatersThatAreIDs,
+	vector<Parameter>& parametersFromTempRelation, bool& lastQuery) {
 	//Print the query. I. e. Make "SK(A,'c') print as SK(A,'c')? Yes(2)"
 	cout << tempRelation.getRelationName() << "(";
 
@@ -229,7 +229,7 @@ size_t Database::findTotalTuples() {
 	return totalTuples;
 }
 
-void Database::evaluateSingleRule(Rule ruleToBeEvaluated, int currRuleIndex) {
+void Database::evaluateSingleRule(Rule& ruleToBeEvaluated, int& currRuleIndex) {
 	size_t numPredicates = ruleToBeEvaluated.getPredicateList().size();
 
 	vector<Relation> relationsFromPredicates;
@@ -262,7 +262,7 @@ void Database::evaluateSingleRule(Rule ruleToBeEvaluated, int currRuleIndex) {
 	union_function(newRelation, currRuleIndex);
 }
 
-Relation Database::evaluatePredicate(Predicate predicate) {
+Relation Database::evaluatePredicate(Predicate& predicate) {
 	Relation tempRelation;
 
 	//Give the tempRelation a name
@@ -318,12 +318,12 @@ Relation Database::evaluatePredicate(Predicate predicate) {
 	return tempRelation;
 }
 
-vector<Parameter> Database::getRuleHeadPredAsVectorOfParams(Rule ruleToBeEvaluated) {
+vector<Parameter> Database::getRuleHeadPredAsVectorOfParams(Rule& ruleToBeEvaluated) {
 	vector<Parameter> returnMe = ruleToBeEvaluated.getPredicate().getVectorOfParameters();
 	return returnMe;
 }
 
-void Database::union_function(Relation currRelation, int currRuleIndex) {
+void Database::union_function(Relation& currRelation, int& currRuleIndex) {
 	string nameOfRelation = currRelation.getRelationName();
 	const set<Tuple>& mySet = currRelation.getTuples();
 	Relation& relationFromMap = relationMap_m.find(nameOfRelation)->second;
