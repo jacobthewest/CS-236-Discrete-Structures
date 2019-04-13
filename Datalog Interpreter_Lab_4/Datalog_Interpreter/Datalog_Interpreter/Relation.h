@@ -52,20 +52,20 @@ public:
 	void setTuples(set<Tuple> tuples) { this->tuples_m = tuples; }
 
 	//Project 4 Functions
-	Relation join_function(vector<Relation> relationsFromPredicates);
-	Scheme combineSchemes(vector<Relation> relationsFromPredicates);
-	bool isJoinable(Tuple t1, Tuple t2, Scheme s1, Scheme s2);
-	Tuple combineTuples(Tuple t1, Tuple t2, Scheme s1, Scheme s2, Scheme newSchemeForRelation);
+	Relation join_function(vector<Relation>& relationsFromPredicates);
+	Scheme combineSchemes(vector<Relation>& relationsFromPredicates);
+	bool isJoinable(Tuple& t1, Tuple& t2, Scheme& s1, Scheme& s2);
+	Tuple combineTuples(Tuple& t1, Tuple& t2, Scheme& s1, Scheme& s2, Scheme& newSchemeForRelation);
 	set<Tuple> getTuples() { return tuples_m; }
-	Relation projectNewRelation(Relation newRelation, vector<size_t> parameterPositionsWeCareAboutFromNewScheme, 
-		vector<Parameter> columnsWeNeeds, string stringOfNewScheme);
-	void printTuplesLab4(vector<string> parametersThaAreIDs, size_t numTuples);
+	Relation projectNewRelation(Relation& newRelation, vector<size_t>& parameterPositionsWeCareAboutFromNewScheme, 
+		vector<Parameter>& columnsWeNeeds, string stringOfNewScheme);
+	void printTuplesLab4(vector<string>& parametersThaAreIDs, size_t& numTuples);
 	void printTuplesForTempTupleLab4(vector<string>& parametersThaAreIDs, Tuple& tempTuple, size_t& j,
 		size_t& numTuplesOutputted);
-	void printSingleTupleWithSpaceLab4(Tuple tempTuple, size_t tempColumn, size_t j,
-		vector<string> parametersThaAreIDs);
-	void printSingleTupleWithNoSpaceLab4(Tuple tempTuple, size_t tempColumn, size_t j,
-		vector<string> parametersThaAreIDs, size_t& numTuplesOutputted);
+	void printSingleTupleWithSpaceLab4(Tuple& tempTuple, size_t& tempColumn, size_t& j,
+		vector<string>& parametersThaAreIDs);
+	void printSingleTupleWithNoSpaceLab4(Tuple& tempTuple, size_t& tempColumn, size_t& j,
+		vector<string>& parametersThaAreIDs, size_t& numTuplesOutputted);
 };
 
 #endif //RELATION_H
