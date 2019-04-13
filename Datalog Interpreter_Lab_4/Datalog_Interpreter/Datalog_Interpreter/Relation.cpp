@@ -269,7 +269,7 @@ void Relation::printSingleTupleWithNoSpace(bool lastQuery, Tuple tempTuple, size
 	numTuplesOutputted = 0; // Set numOutputted to zero so we can start printing for a new row				
 }
 
-Relation Relation::join_function(vector<Relation> relationsFromPredicates) {
+Relation Relation::join_function(vector<Relation>& relationsFromPredicates) {
 
 	//CombineSchemes
 	Scheme newSchemeForRelation;
@@ -387,7 +387,7 @@ Relation Relation::renameLab4(vector<string> parametersThatAreIDs) {
 	return relationToReturn;
 }
 
-Scheme Relation::combineSchemes(vector<Relation> relationsFromPredicates) {
+Scheme Relation::combineSchemes(vector<Relation>& relationsFromPredicates) {
 	size_t numSchemesToCombine;
 	numSchemesToCombine = relationsFromPredicates.size();
 
@@ -439,7 +439,7 @@ Scheme Relation::combineSchemes(vector<Relation> relationsFromPredicates) {
 	return schemeOfNewRelation;
 }
 
-Tuple Relation::combineTuples(Tuple t1, Tuple t2, Scheme s1, Scheme s2, Scheme newSchemeForRelation) {
+Tuple Relation::combineTuples(Tuple& t1, Tuple& t2, Scheme& s1, Scheme& s2, Scheme& newSchemeForRelation) {
 	Tuple newTuple;
 	vector<string> columnIndexFromNewScheme; //For colum indexes already added
 
@@ -477,7 +477,7 @@ Tuple Relation::combineTuples(Tuple t1, Tuple t2, Scheme s1, Scheme s2, Scheme n
 	return newTuple;
 }
 
-bool Relation::isJoinable(Tuple t1, Tuple t2, Scheme s1, Scheme s2) {
+bool Relation::isJoinable(Tuple& t1, Tuple& t2, Scheme& s1, Scheme& s2) {
 	vector<Parameter> matchingColumns;
 	vector<size_t> s1_columnIndex;
 	vector<size_t> s2_columnIndex;
@@ -514,8 +514,13 @@ bool Relation::isJoinable(Tuple t1, Tuple t2, Scheme s1, Scheme s2) {
 	return true;
 }
 
+<<<<<<< HEAD
 Relation Relation::projectNewRelation(Relation newEmptyRelation, vector<size_t> parameterPositionsWeCareAboutFromNewScheme,
 	vector<Parameter> columnsWeNeed, string columnsWeNeedAsString) {
+=======
+Relation Relation::projectNewRelation(Relation& newEmptyRelation, vector<size_t>& parameterPositionsWeCareAboutFromNewScheme, 
+	vector<Parameter>& columnsWeNeed, string columnsWeNeedAsString) {
+>>>>>>> 226d670368832cf963a572f4796ef875c5396d3a
 	vector<Parameter> columns = newEmptyRelation.getHeader().getParameterList();
 	Relation cleanedRelation;
 
@@ -552,7 +557,7 @@ Relation Relation::projectNewRelation(Relation newEmptyRelation, vector<size_t> 
 	return cleanedRelation;
 }
 
-void Relation::printTuplesLab4(vector<string> parametersThatAreIDs, size_t numTuples) {
+void Relation::printTuplesLab4(vector<string>& parametersThatAreIDs, size_t& numTuples) {
 
 	set<Tuple>::iterator tupleIterator = tuples_m.begin();
 
@@ -617,8 +622,8 @@ void Relation::printTuplesForTempTupleLab4(vector<string>& parametersThatAreIDs,
 	}
 }
 
-void Relation::printSingleTupleWithSpaceLab4(Tuple tempTuple, size_t tempColumn, size_t j,
-	vector<string> parametersThatAreIDs) {
+void Relation::printSingleTupleWithSpaceLab4(Tuple& tempTuple, size_t& tempColumn, size_t& j,
+	vector<string>& parametersThatAreIDs) {
 	if ((j == tempTuple.getTupleListSize() - 1)) {
 		cout << "  " << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j);
 	}
@@ -627,8 +632,8 @@ void Relation::printSingleTupleWithSpaceLab4(Tuple tempTuple, size_t tempColumn,
 	}
 }
 
-void Relation::printSingleTupleWithNoSpaceLab4(Tuple tempTuple, size_t tempColumn, size_t j,
-	vector<string> parametersThatAreIDs, size_t& numTuplesOutputted) {
+void Relation::printSingleTupleWithNoSpaceLab4(Tuple& tempTuple, size_t& tempColumn, size_t& j,
+	vector<string>& parametersThatAreIDs, size_t& numTuplesOutputted) {
 	cout << parametersThatAreIDs.at(tempColumn) << "=" << tempTuple.getElementFromTupleList(j) << endl;
 	numTuplesOutputted = 0; // Set numOutputted to zero so we can start printing for a new row	
 }

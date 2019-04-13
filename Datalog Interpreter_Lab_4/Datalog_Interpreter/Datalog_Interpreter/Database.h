@@ -32,21 +32,27 @@ public:
 	Database(vector<Predicate> schemes, vector<Predicate> facts, vector<Rule> rules, vector<Predicate> queries);
 	~Database() {};
 
-	void addRelation(Relation relationObj);
-	void addRowToRelation(Tuple tupleObj);
+	void addRelation(Relation& relationObj);
+	void addRowToRelation(Tuple& tupleObj);
 	void evaluateQueries();
+<<<<<<< HEAD
 	void printTheStuffBeforePrintingTuples(Relation tempRelation, vector<string> paramatersThatAreIDs,
 		vector<Parameter> parametersFromTempRelation, bool lastQuery);
 	void checkForDuplicateParameters(vector<string>& parametersThatAreIDs_m, bool& duplicateParameterExists,
+=======
+	void printTheStuffBeforePrintingTuples(Relation& tempRelation, vector<string>& paramatersThatAreIDs, 
+		vector<Parameter>& parametersFromTempRelation, bool& lastQuery);
+	void checkForDuplicateParameters(vector<string>& parametersThatAreIDs_m, bool& duplicateParameterExists, 
+>>>>>>> 226d670368832cf963a572f4796ef875c5396d3a
 		size_t& positionOfDuplicateParameter, string& parameterValue);
 
 	//Lab 4 Functions
 	void evaluateRules();
-	void evaluateSingleRule(Rule ruleToBeEvaluated, int currRuleIndex);
-	Relation evaluatePredicate(Predicate predicate);
-	vector<Parameter> getRuleHeadPredAsVectorOfParams(Rule ruleToBeEvaluated);
+	void evaluateSingleRule(Rule& ruleToBeEvaluated, int& currRuleIndex);
+	Relation evaluatePredicate(Predicate& predicate);
+	vector<Parameter> getRuleHeadPredAsVectorOfParams(Rule& ruleToBeEvaluated);
 	size_t findTotalTuples();
-	void union_function(Relation newRelation, int currRuleIndex);
+	void union_function(Relation& newRelation, int& currRuleIndex);
 	void printLab4();
 
 };

@@ -1,4 +1,5 @@
 ﻿  Database.cpp
+<<<<<<< HEAD
   DatalogProgram.cpp
   Interpreter.cpp
   Lexer.cpp
@@ -14,4 +15,6 @@
   main.cpp
   Generating Code...
   LINK : C:\Users\jacob\source\repos\CS 236-Discrete Structures\Datalog Interpreter_Lab_4\Datalog_Interpreter\Debug\Datalog_Interpreter.exe not found or not built by the last incremental link; performing full link
+=======
+>>>>>>> 226d670368832cf963a572f4796ef875c5396d3a
   Datalog_Interpreter.vcxproj -> C:\Users\jacob\source\repos\CS 236-Discrete Structures\Datalog Interpreter_Lab_4\Datalog_Interpreter\Debug\Datalog_Interpreter.exe
