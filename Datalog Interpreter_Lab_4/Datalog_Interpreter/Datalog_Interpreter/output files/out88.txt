@@ -1,3 +1,0 @@
-A long running test.
-Runs in about 1 minute without valgrind.
-Useful for performance tuning.
